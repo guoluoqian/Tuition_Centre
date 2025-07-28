@@ -240,7 +240,15 @@ app.get('/student', checkAuthenticatedS, (req, res) => {
 
 // teacher route to render teacher page for users Doing// 
 app.get('/teacher', checkAuthenticatedT, (req, res) => {
-    const sql = '
+    const sql = 'SELECT * FROM teacher'
+    db.query(sql, (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error Retrieving teachers');
+        }
+        // Render HTML page with data
+        res.render('teacher', {teacher: req.session.user, teachers: results});
+    })
     res.render('teacher', {teacher: req.session.user});
 });
 
