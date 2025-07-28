@@ -224,7 +224,7 @@ app.post('/login', (req, res) => {
     });
 });
 
-// student route to render student page for users //
+// student route to render student page for users // Doing
 app.get('/student', checkAuthenticatedS, (req, res) => {
     const sql = 'SELECT * FROM session';
     // Fetch data from MySQL
@@ -253,7 +253,7 @@ app.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/');
 });
-
+// Doing //
 app.get('/session/:id', (req, res) => {
     const sessionId = req.params.id;
     const sql = 'SELECT * FROM session WHERE sessionId = ?';
