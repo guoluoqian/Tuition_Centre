@@ -17,7 +17,7 @@
           <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="/addStudent">Add new student</a>
+                <a class="nav-link" href="/registerS">Add new student</a>
               </li> 
             </ul>
           </div>
@@ -31,17 +31,32 @@
         <div class="text-center">
           <% if (student) { %> 
             <form action="/editStudent/<%= student.studentId %>" method="POST" enctype="multipart/form-data">
-                <label for="name">Student Name:</label><br>
-                <input type="text" id="name" name="name" value = "<%= student.name %>" required><br><br>
+                <label for="username">Username:</label><br>
+                <input type="text" id="username" name="username" value = "<%= student.username %>" required><br><br>
+
+                <label for="Fullname">Fullname:</label><br>
+                <input type="text" id="Fullname" name="Fullname" value = "<%= student.Fullname %>" required><br><br>
+
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" value = "<%= student.email %>" required><br><br>
+
+                <label for="password">Password:</label><br>
+                <input type="password" name="password" placeholder="Enter new password" value = "<%= student.password %>" required><br><br>
 
                 <label for="dob">Date of Birth:</label><br>
                 <input type="date" id="dob" name="dob" value = <%= student.dob %> required><br><br>
 
-                <label for="grade">Student Grade:</label><br>
-                <input type="text" id="grade" name="grade" value = "<%= student.grade %>" required><br><br>
+                <label for="address">Address:</label><br>
+                <input type="text" id="address" name="address" value = "<%= student.address %>" required><br><br>
 
                 <label for="contact">Contact:</label><br>
                 <input type="tel" id="contact" name="contact" pattern="[0-9]{8}" value = <%= student.contact %> required><br><br>
+
+                <label for="grade">Grade:</label><br>
+                <select id="grade" name="grade" class="form-control" value = <%= student.grade %> required>
+                  <option value="N-level" <%= (student && student.grade === 'N-level') ? 'selected' : '' %>>N-level</option>
+                  <option value="O-level" <%= (student && student.grade === 'O-level') ? 'selected' : '' %>>O-level</option>
+                </select><br><br>
 
                 <label for="image">Current Image:</label><br>
                 <input type="file" name="currentImage" value = <%= student.image %> readonly><br>

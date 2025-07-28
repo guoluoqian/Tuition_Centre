@@ -17,7 +17,7 @@
           <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link" href="/addTeacher">Add new teacher</a>
+                <a class="nav-link" href="/registerT">Add new teacher</a>
               </li> 
             </ul>
           </div>
@@ -30,19 +30,50 @@
         <br>
         <div class="text-center">
           <% if (student) { %> 
-            <form action="/editStudent/<%= teacher.teacherId %>" method="POST" enctype="multipart/form-data">
-                <label for="name">Teacher Name:</label><br>
-                <input type="text" id="name" name="name" value = "<%= teacher.name %>" required><br><br>
+            <form action="/editTeacher/<%= teacher.teacherId %>" method="POST" enctype="multipart/form-data">
+                <label for="username">Username:</label><br>
+                <input type="text" id="username" name="username" value = "<%= teacher.username %>" required><br><br>
+
+                <label for="Fullname">Fullname:</label><br>
+                <input type="text" id="Fullname" name="Fullname" value = "<%= teacher.Fullname %>" required><br><br>
+
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" value = "<%= teacher.email %>" required><br><br>
+
+                <label for="password">Password:</label><br>
+                <input type="password" name="password" placeholder="Enter new password" value = "<%= teacher.password %>" required><br><br>
 
                 <label for="dob">Date of Birth:</label><br>
                 <input type="date" id="dob" name="dob" value = <%= teacher.dob %> required><br><br>
 
+                <label for="address">Address:</label><br>
+                <input type="text" id="address" name="address" value = "<%= teacher.address %>" required><br><br>
+
                 <label for="contact">Contact:</label><br>
                 <input type="tel" id="contact" name="contact" pattern="[0-9]{8}" value = <%= teacher.contact %> required><br><br>
 
+                <label for="subject">Subject:</label><br>
+                <select id="subject" name="subject" class="form-control" value = <%= teacher.contact %> required>
+                    <option value="English" <% (teacher && teacher.subject === 'English') 'selected' : '' %>>English</option>
+                    <option value="Math" <% (teacher && teacher.subject === 'Math') 'selected' : '' %>>Math</option>
+                    <option value="Science" <% (teacher && teacher.subject === 'Science') 'selected' : '' %>>Science</option>
+                </select><br><br>
+                
+                <label for="teachingcert">Teaching Certificate(.pdf):</label><br>
+                <input type="file" id="teachingcert" name="teachingcert" class="form-control" accept="application/pdf" value = <%= teacher.teachingcert %> required><br><br>
+
+                <label for="grade">Teaching Grade:</label><br>
+                <select id="grade" name="grade" class="form-control" value = <%= teacher.teachingGrade %> required>
+                  <option value="N-level" <%= (teacher && teacher.teachingGrade === 'N-level') ? 'selected' : '' %>>N-level</option>
+                  <option value="O-level" <%= (teacher && teacher.teachingGrade === 'O-level') ? 'selected' : '' %>>O-level</option>
+                </select><br><br>
+
+                <label for="resume">Resume(.pdf):</label><br>
+                <input type="file" id="resume" name="resume" class="form-control" accept="application/pdf" value = <%= teacher.resume %> required><br><br>
+
                 <label for="image">Current Image:</label><br>
                 <input type="file" name="currentImage" value = <%= teacher.image %> readonly><br>
-                <img src = "/images/<%= teacher.image %>" width="20%"><br><br>
+                <img src = "/images/<%= student.image %>" width="20%"><br><br>
 
                 New image:<br> <input type="file" id="image" name="image" accept="image/*" onchange="checkSize(this)" value = <%= teacher.image %>><br><br>
 
