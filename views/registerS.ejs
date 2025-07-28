@@ -14,7 +14,7 @@
                 <% }); %>
             </div>
         <% } %>
-        <form action="/registerS" method="POST" class="mt-4">
+        <form action="/registerS" method="POST" class="mt-4" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" class="form-control" required 
@@ -61,6 +61,7 @@
                 <input type="file" id="image" name="image" class="form-control" accept="image/*" required 
                 <% if (formData && formData.image) { %> value="<%= formData.image %>" <% } else { %> value="" <% } %>>
             </div>
+            <input type="hidden" name="userType" value="student">
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </div>
