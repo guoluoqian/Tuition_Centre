@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Register</h1>
+        <% if (messages && messages.length > 0) { %>
+            <div class="alert alert-danger">
+                <% messages.forEach(function(message) { %>
+                    <p><%= message %></p>
+                <% }); %>
+            </div>
+        <% } %>
+        <form action="/registerS" method="POST" class="mt-4">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" class="form-control" required 
+                <% if (formData && formData.username) { %> value="<%= formData.username %>" <% } else { %> value="" <% } %>>
+            </div>
+            <div class="form-group">
+                <label for="Fullname">Full Name:</label>
+                <input type="text" id="Fullname" name="Fullname" class="form-control" required 
+                <% if (formData && formData.Fullname) { %> value="<%= formData.Fullname %>" <% } else { %> value="" <% } %>>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" required 
+                <% if (formData && formData.email) { %> value="<%= formData.email %>" <% } else { %> value="" <% } %>>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" class="form-control" required 
+                <% if (formData && formData.dob) { %> value="<%= formData.dob %>" <% } else { %> value="" <% } %>>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" class="form-control" required 
+                <% if (formData && formData.address) { %> value="<%= formData.address %>" <% } else { %> value="" <% } %>>
+            </div>
+            <div class="form-group">
+                <label for="contact">Contact Number:</label>
+                <input type="text" id="contact" name="contact" class="form-control" required 
+                <% if (formData && formData.contact) { %> value="<%= formData.contact %>" <% } else { %> value="" <% } %>>
+            </div>
+            <div class="form-group">
+                <label for="grade">Grade:</label>
+                <select id="grade" name="grade" class="form-control" required>
+                    <option value="N-level" <% if (formData && formData.grade === 'N-level') {%> selected <% } %>>N-level</option>
+                    <option value="O-level" <% if (formData && formData.grade === 'O-level') {%> selected <% } %>>O-level</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="image">Portrait(.png):</label>
+                <input type="file" id="image" name="image" class="form-control" accept="image/*" required 
+                <% if (formData && formData.image) { %> value="<%= formData.image %>" <% } else { %> value="" <% } %>>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+</body>
+</html>
