@@ -47,8 +47,13 @@ db.connect((err) => {
     console.log('Connected to database');
 });
 
-app.use(express.urlencoded({ extended: false }));
+app.set('view engine', 'ejs');
+
 app.use(express.static('public'));
+
+app.use(express.urlencoded({
+    extended: false
+}));
 
 app.use(session({
     secret: 'secret',
@@ -59,9 +64,6 @@ app.use(session({
 }));
 
 app.use(flash());
-
-
-app.set('view engine', 'ejs');
 
 
 // validateRegistrationS for student //
@@ -297,6 +299,113 @@ app.get('/teacher', checkAuthenticatedT, (req, res) => {
 app.get('/admin', checkAuthenticatedA, (req, res) => {
     res.render('admin', {admin: req.session.user});
 });
+
+
+// route to update student information //
+app.get('/editStudent/:id', (req, res) => {
+    const studentId = req.params.id;
+    const sql = 'SELECT * FROM student WHERE studentId = ?';
+    
+    connection.query(sql, [studentId], (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error retrieving student by ID');
+        }
+        if (results.length > 0) {
+            res.render('editStudent', { student: results [0] });
+        } else {
+            res.status (404).send('Student not found');
+        }
+    });
+});
+
+app.post('/editStudent/:id', uploadstudent.single('image'), (req, res) => {
+    const studentId = req.params.id;
+    const { username, Fullname, email, password, dob, contact } = req.body;
+    let image = req.body.currentImage; 
+    if (req.file) {
+        image = req.file.filename;
+    }
+
+    const sql = 'UPDATE student SET username = ?, Fullname = ?, email = ? password = ?, dob = ?, address = ?, contact = ?, grade = ?, image = ? WHERE studentId = ?';
+
+    connection.query(sql, [username, Fullname, email, password, dob, address, 
+        contact, grade, image, studentId], (error, results) => {
+        if (error) {
+ 
+            console.error("Error updating student:", error);
+            res.status (500).send('Error updating student');
+        } else {
+            res.redirect('/');
+        }
+    });
+});
+
+
+// route to update teacher information //
+app.get('/editTeacher/:id', (req, res) => {
+    const teacherId = req.params.id;
+    const sql = 'SELECT * FROM teacher WHERE teacherId = ?';
+    
+    connection.query(sql, [teacherId], (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error retrieving teacher by ID');
+        }
+        if (results.length > 0) {
+            res.render('editTeacher', { teacher: results [0] });
+        } else {
+            res.status (404).send('Teacher not found');
+        }
+    });
+});
+
+app.post('/editTeacher/:id', uploadteacher.single('image'), (req, res) => {
+    const teacherId = req.params.id;
+    const { username, Fullname, email, password, dob, contact } = req.body;
+    let image = req.body.currentImage;
+    if (req.file) {
+        image = req.file.filename;
+    }
+    const sql = 'UPDATE teacher SET username = ?, Fullname = ?, email = ?, password = ?, dob = ?, address = ?, contact = ?, subject = ?, teachingcert = ?, teachingGrade = ?, resume = ?, image = ? WHERE teacherId = ?';
+    connection.query(sql, [username, Fullname, email, password, dob, address, contact, 
+        subject, teachingcert, teachingGrade, resume, image, teacherId], (error, results) => {
+        if (error) {
+            console.error("Error updating teacher:", error);
+            res.status (500).send('Error updating teacher');
+        } else {
+            res.redirect('/');
+        }
+    });
+});
+
+// routes to delete student and teacher records //
+app.get('/deleteStudent/:id', (req, res) => {
+    const studentId = req.params.id;
+    const sql = 'DELETE FROM student WHERE studentId = ?';
+    connection.query(sql, (studentId), (error, results) => {
+        if (error) {
+            console.error("Error deleting student:", error);
+            res.status (500).send('Error deleting student');
+        } else {
+            res.redirect('/');
+        }
+    });
+});
+
+app.get('/deleteTeacher/:id', (req, res) => {
+    const teacherId = req.params.id;
+    const sql = 'DELETE FROM teacher WHERE teacherId = ?';
+    connection.query(sql, (teacherId), (error, results) => {
+        if (error) {
+            console.error("Error deleting teacher:", error);
+            res.status (500).send('Error deleting teacher');
+        } else {
+            res.redirect('/');
+        }
+    });
+});
+
 
 // logout route //
 app.get('/logout', (req, res) => {
