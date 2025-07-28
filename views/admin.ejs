@@ -112,19 +112,62 @@ li {
         </div>
     </div>
 
-</body>
-</html>
-
 <script>
     function closePopup() {
-    document.getElementById("announcement").style.display = "none";
-}
+        document.getElementById("announcement").style.display = "none";
+    }
+        window.onload = function () {
+        document.getElementById("announcement").style.display = "flex";
+    };
 
-window.onload = function () {
-    document.getElementById("announcement").style.display = "flex";
-};
+    // Function to load users registered this month
+// API route to get inbox messages
+// app.get('/api/messages', (req, res) => {
+//     db.query('SELECT sender, message FROM messages', (err, results) => {
+//         if (err) return res.status(500).send(err);
+//         res.json(results);
+//     });
+// });
+
+// API route to get this month’s registered users
+app.get('/registerS', (req, res) => {
+    db.query(`
+        SELECT name, contact 
+        FROM student
+        WHERE role = 'student'
+    `, (err, results) => {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).json({ 
+                success: false,
+                message: 'Failed to fetch student data' 
+            });
+        }
+        res.json({
+            success: true,
+            data: results
+        });
+    });
+});
+
+fetch('/students')
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Process data.data array
+      const studentList = document.getElementById("student-list");
+      studentList.innerHTML = data.data.map(student => 
+        `<li>${student.name} - ${student.contact}</li>`
+      ).join('');
+    } else {
+      alert('Error loading students: ' + data.message);
+    }
+  })
+  .catch(error => console.error('Error:', error));
 </script>
 
 
 </body>
 </html>
+
+

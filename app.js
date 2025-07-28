@@ -124,7 +124,7 @@ const checkAuthenticatedT = (req, res, next) => {
     }
 };
 
-// check if admin is logged in //
+//check if admin is logged in //
 const checkAuthenticatedA = (req, res, next) => {
     if (req.session.user) {
         return next();
@@ -135,6 +135,10 @@ const checkAuthenticatedA = (req, res, next) => {
 };
 
 app.get('/', (req, res) => {
+    res.render('home', { user: req.session.user, messages: req.flash('success')});
+});
+
+app.get('/register', (req, res) => {
     res.render('account', { user: req.session.user, messages: req.flash('success')});
 });
 
@@ -295,7 +299,7 @@ app.get('/teacher', checkAuthenticatedT, (req, res) => {
 });
 
 
-// admin route to render admin page for users NOT DONE//
+//admin route to render admin page for users NOT DONE//
 app.get('/admin', checkAuthenticatedA, (req, res) => {
     res.render('admin', {admin: req.session.user});
 });
@@ -406,6 +410,21 @@ app.get('/deleteTeacher/:id', (req, res) => {
     });
 });
 
+// route for admin
+app.get('/adminlogin', (req, res) => {
+    res.render('admin');
+});
+
+// Route to serve the inbox page
+app.get('/inbox', (req, res) => {
+    res.render('inbox');
+});
+
+// Route to serve the contact page
+
+app.get('/contact', (req, res) => {
+    res.render('contact');
+});
 
 // logout route //
 app.get('/logout', (req, res) => {

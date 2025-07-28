@@ -45,23 +45,23 @@ app.use(flash());
 // Setting up EJS
 app.set('view engine', 'ejs');
 
-// const checkAuthenticated = (req, res, next) => {
-//     if (req.session.user) {
-//         return next();
-//     } else {
-//         req.flash('error', 'Please log in to view this resource');
-//         res.redirect('/login');
-//     }
-// };
+const checkAuthenticated = (req, res, next) => {
+    if (req.session.user) {
+        return next();
+    } else {
+        req.flash('error', 'Please log in to view this resource');
+        res.redirect('/login');
+    }
+};
 
-// const checkAdmin = (req, res, next) => {
-//     if (req.session.user.role === 'admin') {
-//         return next();
-//     } else {
-//         req.flash('error', 'Access denied');
-//         res.redirect('/dashboard');
-//     }
-// };
+const checkAdmin = (req, res, next) => {
+    if (req.session.user.role === 'admin') {
+        return next();
+    } else {
+        req.flash('error', 'Access denied');
+        res.redirect('/dashboard');
+    }
+};
 
 // Routes
 app.get('/', (req, res) => {
@@ -156,15 +156,15 @@ app.post('/contact', (req, res) => {
 
 
 
-// app.get('/dashboard', checkAuthenticated, (req, res) => {
-//     res.render('dashboard', { user: req.session.user });
-// });
+app.get('/dashboard', checkAuthenticated, (req, res) => {
+    res.render('dashboard', { user: req.session.user });
+});
 
 
-// app.get('/admin', checkAuthenticated, checkAdmin, (req, res) => {
-//     res.render('admin', { user: req.session.user });
-// });
-app.get('/admin', (req, res) => {
+app.get('/admin', checkAuthenticated, checkAdmin, (req, res) => {
+    res.render('admin', { user: req.session.user });
+});
+app.get('/adminlogin', (req, res) => {
     res.render('admin');
 });
 
@@ -173,6 +173,10 @@ app.get('/inbox', (req, res) => {
     res.render('inbox');
 });
 
+app.post('/register', (req, res) => {
+    const { name, contact } = req.body;
+
+});
 
 app.get('/logout', (req, res) => {
     req.session.destroy();
