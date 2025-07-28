@@ -238,8 +238,9 @@ app.get('/student', checkAuthenticatedS, (req, res) => {
     });
 });
 
-// teacher route to render teacher page for users NOT DONE// 
+// teacher route to render teacher page for users Doing// 
 app.get('/teacher', checkAuthenticatedT, (req, res) => {
+    const sql = '
     res.render('teacher', {teacher: req.session.user});
 });
 
