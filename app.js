@@ -11,16 +11,26 @@ const app = express();
 const multer = require('multer');
 
 // Set up multer for file uploads
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'public/images'); // Directory to save uploaded files
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname);
-    }
+const uploadstudent = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => cb(null, 'public/student'), // Directory to save uploaded files
+        filename: (req, file, cb) => cb(null, file.originalname)
+    })
 });
+const uploadteacher = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => cb(null, 'public/teacher'), // Directory to save uploaded files
+        filename: (req, file, cb) => cb(null, file.originalname)
+    })
+});
+// for admin
+// const uploadadmin = multer({
+//     storage: multer.diskStorage({
+//         destination: (req, file, cb) => cb(null, 'public/admin'), // Directory to save uploaded files
+//         filename: (req, file, cb) => cb(null, file.originalname)
+//     })
+// });
 
-const upload = multer({storage: storage});
 
 // Database connection
 const db = mysql.createConnection({
@@ -50,13 +60,13 @@ app.use(session({
 
 app.use(flash());
 
-// Setting up EJS
+
 app.set('view engine', 'ejs');
 
 
 // validateRegistrationS for student //
 const validateRegistrationS = (req, res, next) => {
-    const {username, Fullname, email, password, dob, address, contact, grade, image} = req.body;
+    const {username, Fullname, email, password, dob, contact, grade} = req.body;
 
     if (!username || !Fullname || !email || !password || !dob || !contact || !grade) {
         return res.status(400).send('Required field not fill in.');
@@ -73,10 +83,14 @@ const validateRegistrationS = (req, res, next) => {
 
 // validateRegistration for teacher //
 const validateRegistrationT = (req, res, next) => {
-    const {username, Fullname, email, password, dob, address, contact, subject, teachingcert, teachingGrade, resume, image} = req.body;
+    const {username, Fullname, email, password, dob, contact, subject, teachingGrade} = req.body;
 
-    if (!username || !Fullname || !email || !password || !dob || !contact || !subject || !teachingcert || !teachingGrade || !resume) {
+    if (!username || !Fullname || !email || !password || !dob || !contact || !subject || !teachingGrade) {
         return res.status(400).send('Required field not fill in.');
+    }
+    
+    if (!req.files || !req.files.teachingcert || !req.files.teachingcert[0] || !req.files.resume || !req.files.resume[0]) {
+        return res.status(400).send('Required file uploads are not fill in.');
     }
 
     if (password.length < 6) {
@@ -88,7 +102,7 @@ const validateRegistrationT = (req, res, next) => {
             // next middleware function or route handler.
 };
 
-// check if user is logged in //
+// check if student is logged in //
 const checkAuthenticatedS = (req, res, next) => {
     if (req.session.user) {
         return next();
@@ -98,7 +112,7 @@ const checkAuthenticatedS = (req, res, next) => {
     }
 };
 
-// check if user is logged in //
+// check if teacher is logged in //
 const checkAuthenticatedT = (req, res, next) => {
     if (req.session.user) {
         return next();
@@ -108,7 +122,7 @@ const checkAuthenticatedT = (req, res, next) => {
     }
 };
 
-// check if user is logged in //
+// check if admin is logged in //
 const checkAuthenticatedA = (req, res, next) => {
     if (req.session.user) {
         return next();
@@ -137,10 +151,14 @@ app.get('/registerT', (req, res) => {
 });
 
 // register route for students //
-app.post('/registerS', validateRegistrationS, (req, res) => {
-    //******** TODO: Update register route to include role. ********//
-    const {username, Fullname, email, password, dob, address, contact, grade, image} = req.body;
-
+app.post('/registerS', uploadstudent.single('image'), validateRegistrationS, (req, res) => {
+    const {username, Fullname, email, password, dob, address, contact, grade} = req.body;
+    let image;
+    if (req.file) {
+        image = req.file.filename; // save only the filename
+    } else {
+        image = null
+    }
     const sql = 'INSERT INTO student (username, Fullname, email, password, dob, address, contact, grade, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
     db.query(sql, [username, Fullname, email, password, dob, address, contact, grade, image], (err, result) => {
         if (err) {
@@ -153,10 +171,33 @@ app.post('/registerS', validateRegistrationS, (req, res) => {
 });
 
 // register route for teachers //
-app.post('/registerT', validateRegistrationT, (req, res) => {
-    //******** TODO: Update register route to include role. ********//
-    const {username, Fullname, email, password, dob, address, contact, subject, teachingcert, teachingGrade, resume, image} = req.body;
+app.post('/registerT', uploadteacher.fields([
+    {name: 'teachingcert'},
+    {name: 'resume'},
+    {name: 'image'}
+]), validateRegistrationT, (req, res) => {
+    const {username, Fullname, email, password, dob, address, contact, subject, teachingGrade} = req.body;
+    let teachingcert;
+    let resume;
+    let image;
 
+    if (req.files && req.files.teachingcert) {
+        teachingcert = req.files.teachingcert[0].filename; // save only the filename
+    } else {
+        teachingcert = null
+    }
+
+    if (req.files && req.files.resume) {
+        resume = req.files.resume[0].filename; // save only the filename
+    } else {
+        image = null
+    }
+
+    if (req.files && req.files.image) {
+        image = req.files.image[0].filename; // save only the filename
+    } else {
+        image = null
+    }
     const sql = 'INSERT INTO teacher (username, Fullname, email, password, dob, address, contact, subject, teachingcert, teachingGrade, resume, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     db.query(sql, [username, Fullname, email, password, dob, address, contact, subject, teachingcert, teachingGrade, resume, image], (err, result) => {
         if (err) {
@@ -224,7 +265,7 @@ app.post('/login', (req, res) => {
     });
 });
 
-// student route to render student page for users // Doing
+// student route to render student page for users //
 app.get('/student', checkAuthenticatedS, (req, res) => {
     const sql = 'SELECT * FROM session';
     // Fetch data from MySQL
@@ -238,7 +279,7 @@ app.get('/student', checkAuthenticatedS, (req, res) => {
     });
 });
 
-// teacher route to render teacher page for users Doing// 
+// teacher route to render teacher page for users NOT DONE// 
 app.get('/teacher', checkAuthenticatedT, (req, res) => {
     const sql = 'SELECT * FROM teacher'
     db.query(sql, (error, results) => {
@@ -246,11 +287,11 @@ app.get('/teacher', checkAuthenticatedT, (req, res) => {
             console.error('Database query error:', error.message);
             return res.status(500).send('Error Retrieving teachers');
         }
-        // Render HTML page with data
-        res.render('teacher', {teacher: req.session.user, teachers: results});
+    // Render HTML page with data
+    res.render('teacher', {teacher: req.session.user, teachers: results});
     })
-    res.render('teacher', {teacher: req.session.user});
 });
+
 
 // admin route to render admin page for users NOT DONE//
 app.get('/admin', checkAuthenticatedA, (req, res) => {
@@ -262,7 +303,7 @@ app.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/');
 });
-// Doing //
+
 app.get('/session/:id', (req, res) => {
     const sessionId = req.params.id;
     const sql = 'SELECT * FROM session WHERE sessionId = ?';
