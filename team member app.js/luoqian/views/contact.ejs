@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enquiry - EDUFIRST LEARNING CENTRE</title>
+    <style>
+        :root {
+            --primary: #2c5aa0;
+            --secondary: #f8f9fa;
+            --accent: #ff6b00;
+            --text: #333;
+            --light-text: #666;
+            --border: #ddd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo img {
+            height: 60px;
+        }
+        
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin: 20px 0;
+            font-weight: 700;
+            font-size: 2.2rem;
+        }
+        
+        .enquiry-container {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .form-section {
+            flex: 2;
+            padding: 30px;
+        }
+        
+        .info-section {
+            flex: 1;
+            background-color: var(--primary);
+            color: white;
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-item input {
+            width: auto;
+            margin-right: 8px;
+        }
+        
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background-color: #e05d00;
+        }
+        
+        .info-section h2 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .info-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+        
+        .contact-info {
+            margin-bottom: 25px;
+        }
+        
+        .contact-info p {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .contact-info i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        .branch-hours {
+            margin-top: 30px;
+        }
+        
+        .branch-hours h3 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .branch-hours p {
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .enquiry-container {
+                flex-direction: column;
+            }
+            
+            .info-section {
+                order: -1;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+  <header class="navbar">
+    <div class="logo">EDU<span>FIRST</span> LEARNING CENTRE</div>
+    <nav class="nav-links">
+      <a href="/">HOME</a>
+      <a href="/about">ABOUT US</a>
+      <a href="/subjects">subjects ▼</a>
+      <a href="/location">LOCATIONS ▼</a>
+      <a href="/blog">BLOG</a>
+      <a href="/contact" class="contact-button">CONTACT US</a>
+    </nav>
+  </header>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="https://www.edufirst.com.sg/images/logo.png" alt="EDUFIRST Logo">
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h1>Enquiry Form</h1>
+        
+        <div class="enquiry-container">
+            <div class="form-section">
+                <form>
+                    <div class="form-group">
+                        <label for="parent-name">Parent's Name *</label>
+                        <input type="text" id="parent-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="student-name">Student's Name *</label>
+                        <input type="text" id="student-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contact">Contact Number *</label>
+                        <input type="tel" id="contact" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="branch">Preferred Branch *</label>
+                        <select id="branch" required>
+                            <option value="">Select a branch</option>
+                            <option value="bukit-timah">Bukit Timah</option>
+                            <option value="hougang">Hougang</option>
+                            <option value="tampines">Tampines</option>
+                            <option value="west">West (Clementi)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Subjects Interested *</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="english" name="subjects">
+                                <label for="english">English</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="math" name="subjects">
+                                <label for="math">Mathematics</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="science" name="subjects">
+                                <label for="science">Science</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="chinese" name="subjects">
+                                <label for="chinese">Chinese</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="level">Student's Level *</label>
+                        <select id="level" required>
+                            <option value="">Select level</option>
+                            <option value="p1">Primary 1</option>
+                            <option value="p2">Primary 2</option>
+                            <option value="p3">Primary 3</option>
+                            <option value="p4">Primary 4</option>
+                            <option value="p5">Primary 5</option>
+                            <option value="p6">Primary 6</option>
+                            <option value="s1">Secondary 1</option>
+                            <option value="s2">Secondary 2</option>
+                            <option value="s3">Secondary 3</option>
+                            <option value="s4">Secondary 4</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Additional Message</label>
+                        <textarea id="message"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn">SUBMIT ENQUIRY</button>
+                </form>
+            </div>
+            
+            <div class="info-section">
+                <h2>Contact Information</h2>
+                
+                <div class="contact-info">
+                    <p><i class="fas fa-phone-alt"></i> +65 9106 7716</p>
+                    <p><i class="fas fa-envelope"></i> enquiry@edufirst.com.sg</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Multiple locations across Singapore</p>
+                </div>
+                
+                <div class="branch-hours">
+                    <h3>Operating Hours</h3>
+                    <p><strong>Weekdays:</strong> 10:00 AM - 7:00 PM</p>
+                    <p><strong>Weekends:</strong> 9:00 AM - 6:00 PM</p>
+                </div>
+				<div class="branch-hours">
+					<h3>Branches</h3>
+					<p><strong>Bukit Timah:</strong> 123 Bukit Timah Road, Singapore 589456</p>
+					<p><strong>Hougang:</strong> 456 Hougang Avenue 10, Singapore 530456</p>
+					<p><strong>Tampines:</strong> 789 Tampines Street 21, Singapore 520789</p>
+					<p><strong>West (Clementi):</strong> 321 Clementi Avenue 5, Singapore 120321</p>
+                
+            </div>
+			<footer id="react-footer" class="react-footer home-main pt---120 ">
+            <div class="footer-top">
+                <div class="container">
+                    <div class="footer-top-cta">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <h3>Subscribe To Our Newsletter</h3>
+<h4>Stay up-to-date with our educational offerings and events!</h4>
+                            </div>
+                            <div class="col-lg-5 text-right">
+                                <div class="newsletter_two">
+                                <div class="emaillist" id="es_form_f2-n1"><form action="/enquiry.html#es_form_f2-n1" method="post" class="es_subscription_form es_shortcode_form  es_ajax_subscription_form" id="es_subscription_form_6886e08e53523" data-source="ig-es" data-form-id="2"><input type="hidden" name="esfpx_form_id" value="2" /><input type="hidden" name="esfpx_lists[]" value="862d213d7b70" /><input type="hidden" name="es" value="subscribe" />
+			<input type="hidden" name="esfpx_es_form_identifier" value="f2-n1" />
+			<input type="hidden" name="esfpx_es_email_page" value="14" />
+			<input type="hidden" name="esfpx_es_email_page_url" value="https://www.edufirst.com.sg/enquiry.html" />
+			<input type="hidden" name="esfpx_status" value="Unconfirmed" />
+			<input type="hidden" name="esfpx_es-subscribe" id="es-subscribe-6886e08e53523" value="e86380413a" />
+			<label style="position:absolute;top:-99999px;left:-99999px;z-index:-99;" aria-hidden="true"><span hidden>Please leave this field empty.</span><input type="email" name="esfpx_es_hp_email" class="es_required_field" tabindex="-1" autocomplete="-1" value="" /></label><style>form.es_subscription_form[data-form-id="2"] * { box-sizing: border-box; } body {margin: 0;}#esfpx_email_29e79bd7faac1{padding-top:5px;padding-bottom:5px;}#iwgm4{background-color:#545563;color:white;}form[data-form-id="2"] .es-form-field-container .gjs-row{display:flex;justify-content:flex-start;align-items:stretch;flex-wrap:nowrap;}form[data-form-id="2"] .es-form-field-container .gjs-cell{flex-grow:1;flex-basis:100%;}form[data-form-id="2"] .es-form-field-container .gjs-cell[data-highlightable="1"]:empty{border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:dashed;border-right-style:dashed;border-bottom-style:dashed;border-left-style:dashed;border-top-color:rgb(204, 204, 204);border-right-color:rgb(204, 204, 204);border-bottom-color:rgb(204, 204, 204);border-left-color:rgb(204, 204, 204);border-image-source:initial;border-image-slice:initial;border-image-width:initial;border-image-outset:initial;border-image-repeat:initial;height:30px;}form[data-form-id="2"] .es-form-field-container .gjs-row .gjs-cell input[type="checkbox"], form[data-form-id="2"] .es-form-field-container .gjs-row .gjs-cell input[type="radio"]{margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:0px;width:auto;}form[data-form-id="2"] .es-form-field-container .gjs-row{margin-bottom:0.6em;}form[data-form-id="2"] .es-form-field-container label.es-field-label{display:block;}@media (max-width: 320px){form[data-form-id="2"] .es-form-field-container{padding-top:1rem;padding-right:1rem;padding-bottom:1rem;padding-left:1rem;}}</style><div class="es-form-field-container"><div class="gjs-row"></div><div class="gjs-row"><div class="gjs-cell"><input type="email" required class="es-email" name="esfpx_email" autocomplete="off" placeholder="Your Email Address" id="esfpx_email_29e79bd7faac1" /><input type="submit" name="submit" value="Sign Me Up" required id="iwgm4" /></div></div><div class="gjs-row"><div class="gjs-cell"></div></div></div><span class="es_spinner_image" id="spinner-image"><img src="https://www.edufirst.com.sg/wp-content/plugins/email-subscribers/lite/public/images/spinner.gif" alt="Loading" /></span></form><span class="es_subscription_message " id="es_subscription_message_6886e08e53523"></span></div>  
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+</body>
+</html>
+        </div>
+    </div>
+</body>
+</html>

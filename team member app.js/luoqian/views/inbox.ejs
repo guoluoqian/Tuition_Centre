@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inbox Messages</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>📬 Inbox Messages</h1>
+        <a href="/admin" class="btn btn-primary mb-4">← Back to Dashboard</a>
+
+        <ul id="inbox-list" class="list-group">
+            <!-- Messages will be loaded here -->
+        </ul>
+    </div>
+
+    <script>
+        // Fetch inbox messages
+        fetch('/api/messages')
+            .then(response => response.json())
+            .then(data => {
+                var inboxList = document.getElementById("inbox-list");
+
+                for (var i = 0; i < data.length; i++) {
+                    var li = document.createElement("li");
+                    li.className = "list-group-item";
+                    li.innerHTML = "<strong>" + data[i].sender + ":</strong> " + data[i].message;
+                    inboxList.appendChild(li);
+                }
+
+                if (data.length === 0) {
+                    inboxList.innerHTML = "<li class='list-group-item'>No messages found.</li>";
+                }
+            })
+            .catch(error => {
+                document.getElementById("inbox-list").innerHTML = "<li class='list-group-item text-danger'>Error loading messages.</li>";
+                console.error("Fetch error:", error);
+            });
+    </script>
+</body>
+</html>
