@@ -28,16 +28,25 @@ DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
   `adminId` int NOT NULL,
   `username` varchar(20) NOT NULL,
-  `password` varchar(255) NOT NULL,
   `name` varchar(45) NOT NULL,
-  `dob` date NOT NULL,
+  `dob` date NOT NULL,  
   `email` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
   `contact` varchar(10) NOT NULL,
   `image` varchar(1000) DEFAULT NULL,
-  PRIMARY KEY (`adminId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`adminId`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+-- Table for messages --
+CREATE TABLE messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_role VARCHAR(20),     -- 'student' or 'teacher'
+    sender_name VARCHAR(100),
+    message TEXT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 
 --
 -- Table structure for table `session`
