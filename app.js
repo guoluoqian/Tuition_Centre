@@ -47,9 +47,11 @@ const uploadadmin = multer({
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'Republic_C207',
+    password: 'RP738964$',
     database: 'ca2_team4'
 });
+
+//RP738964$
 
 db.connect((err) => {
     if (err) {
@@ -319,39 +321,40 @@ app.post('/login', (req, res) => {
         return res.redirect('/login');
     }
 
-    let tableName = '';
-    let redirectPath = '';
+    const table = userType;
+    const allowedTables = ['student', 'teacher'];
+
+     let redirectPath = '';
 
     if (userType === 'student') {
-        tableName = 'student';
         redirectPath = '/student';
     } else if (userType === 'teacher') {
-        tableName = 'teacher';
         redirectPath = '/teacher';
-    } else if (userType === 'admin') {
-        tableName = 'admin';
-        redirectPath = '/admin';
     } else {
         req.flash('error', 'Invalid Type selected.');
         return res.redirect('back');
     }
 
-
-    const sql = `SELECT * FROM ${tableName} WHERE email = ? AND password = ?`;
+    if (!allowedTables.includes(table)) {
+        return res.status(400).send("Invalid table selection.");
+    }
+    const sql = `SELECT * FROM ${table} WHERE email = ? AND password = ?`;
     db.query(sql, [email, password], (err, results) => {
         if (err) {
-            throw err;
+            console.error("Database error:", err);
+            req.flash('error', 'Database error occurred');
+            return res.redirect('/login');
         }
 
         if (results.length > 0) {
             // Successful login
             req.session.user = results[0]; // store user in session
             req.flash('success', 'Login successful!');
-            res.redirect(redirectPath);
+            return res.redirect(redirectPath);
         } else {
             // Invalid credentials
             req.flash('error', 'Invalid email or password.');
-            res.redirect('/login');
+            return res.redirect('/login');
         }
     });
 });
@@ -431,19 +434,34 @@ app.get('/student', checkAuthenticatedS, (req, res) => {
 
 // teacher route to render teacher page for users DONE// 
 app.get('/teacher', checkAuthenticatedT, (req, res) => {
-    const teacher = req.session.user; //Get the currently logged-in teacher's data
-    db.query(sql, (error, results) => {
+    const teacher = req.session.user; // Get the currently logged-in teacher's data
+
+    // 1. First, fetch the teacher's details (if needed)
+    const sqlTeacher = 'SELECT * FROM teacher WHERE email = ?'; // Example query
+
+    db.query(sqlTeacher, [teacher.email], (error, teacherResults) => {
         if (error) {
             console.error('Database query error:', error.message);
-            return res.status(500).send("Error retrieving teacher's info ");
+            return res.status(500).send("Error retrieving teacher's info");
         }
-    //Fetch session taught by teacher
-    const sqlSession = 'SELECT s.sessionId, s.subject, s.session_date, s.session_time FROM session s WHERE s.teacher_name = ?'    
-    // Render HTML page with data
-    res.render('teacher', {teacher: req.session.user, teachers: results});
-    })
-});
 
+        // 2. Fetch sessions taught by the teacher
+        const sqlSession = 'SELECT T.sessionId, T.subject, T.session_date, T.session_time FROM session T WHERE T.teacher_name = ?';
+
+        db.query(sqlSession, [teacher.name], (sessionError, sessionResults) => {
+            if (sessionError) {
+                console.error('Database session error:', sessionError.message);
+                return res.status(500).send("Error retrieving sessions");
+            }
+
+            // 3. Render the page with both teacher and session data
+            res.render('teacher', {
+                teacher: req.session.user, // or teacherResults[0] if you fetched from DB
+                sessions: sessionResults   // Pass sessions to the template
+            });
+        });
+    });
+});
 
 
 
