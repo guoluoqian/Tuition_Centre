@@ -79,7 +79,7 @@ app.use(flash());
 
 // validateRegistrationS for student //
 const validateRegistrationS = (req, res, next) => {
-    const {username, Fullname, email, password, dob, contact, grade} = req.body;
+    const { username, Fullname, email, password, dob, contact, grade } = req.body;
 
     if (!username || !Fullname || !email || !password || !dob || !contact || !grade) {
         return res.status(400).send('Required field not fill in.');
@@ -90,18 +90,17 @@ const validateRegistrationS = (req, res, next) => {
         req.flash('formData', req.body);
         return res.redirect('/registerS');
     }
-    next(); // If all validations pass, the next function is called, allowing the request to proceed to the
-            // next middleware function or route handler.
+    next();
 };
 
 // validateRegistration for teacher //
 const validateRegistrationT = (req, res, next) => {
-    const {username, Fullname, email, password, dob, contact, subject, teachingGrade} = req.body;
+    const { username, Fullname, email, password, dob, contact, subject, teachingGrade } = req.body;
 
     if (!username || !Fullname || !email || !password || !dob || !contact || !subject || !teachingGrade) {
         return res.status(400).send('Required field not fill in.');
     }
-    
+
     if (!req.files || !req.files.teachingcert || !req.files.teachingcert[0] || !req.files.resume || !req.files.resume[0]) {
         return res.status(400).send('Required file uploads are not fill in.');
     }
@@ -111,8 +110,7 @@ const validateRegistrationT = (req, res, next) => {
         req.flash('formData', req.body);
         return res.redirect('/register');
     }
-    next(); // If all validations pass, the next function is called, allowing the request to proceed to the
-            // next middleware function or route handler.
+    next();
 };
 
 // check if student is logged in //
@@ -360,15 +358,74 @@ app.post('/login', (req, res) => {
 
 // student route to render student page for users //
 app.get('/student', checkAuthenticatedS, (req, res) => {
-    const sql = 'SELECT * FROM session';
+    const studentId = req.session.user.studentId;
+
+    // check for available session
+    const sessionA = `
+    SELECT s.*, s.sessionId, COUNT(ss.sessionId) AS 'current_student'
+    FROM session s
+    LEFT JOIN session_signup ss ON s.sessionId = ss.sessionId
+    WHERE s.sessionId NOT IN (SELECT sessionId FROM session_signup WHERE studentId = ?)
+    GROUP BY s.sessionId
+    `;
+    // check for signed up session
+    const sessionS = `
+    SELECT s.*, s.sessionId, COUNT(ss.sessionId) AS 'current_student'
+    FROM session s
+    LEFT JOIN session_signup ss ON s.sessionId = ss.sessionId
+    WHERE s.sessionId IN (SELECT sessionId FROM session_signup WHERE studentId = ?)
+    GROUP BY s.sessionId
+    `;
+
+
     // Fetch data from MySQL
-    db.query(sql, (error, results) => {
-        if (error) {
-            console.error('Database query error:', error.message);
+    db.query(sessionA, [studentId], (error2, results2) => {
+        if (error2) {
+            console.error('Database query error:', error2.message);
             return res.status(500).send('Error Retrieving sessions');
         }
-    // Render HTML page with data
-    res.render('student', {student: req.session.user, session: results});
+        db.query(sessionS, [studentId], (error3, results3) => {
+            if (error3) {
+                console.error('Database query error:', error3.message);
+                return res.status(500).send('Error Retrieving sessions');
+            }
+            for (let i = 0; i < results2.length; i++) {
+                const newDate = new Date(results2[i].session_date);
+
+                const duration = results2[i].duration;
+                const parts = duration.split(":");
+                const hrs = parts[0]
+                const mins = parts[1]
+
+                results2[i].session_date = newDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: '2-digit',
+                    year: 'numeric'
+                });
+                results2[i].duration = hrs + ' hrs ' + mins + ' mins'
+            }
+            for (let i = 0; i < results3.length; i++) {
+                const newDate = new Date(results3[i].session_date);
+
+                const duration = results3[i].duration;
+                const parts = duration.split(":");
+                const hrs = parts[0]
+                const mins = parts[1]
+
+                results3[i].session_date = newDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: '2-digit',
+                    year: 'numeric'
+                });
+                results3[i].duration = hrs + ' hrs ' + mins + ' mins'
+            }
+            // Render HTML page with data
+            res.render('student', {
+                student: req.session.user,
+                sessionA: results2,
+                sessionS: results3
+            });
+        });
     });
 });
 
@@ -583,20 +640,48 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-app.get('/session/:id', (req, res) => {
-    const sessionId = req.params.id;
-    const sql = 'SELECT * FROM session WHERE sessionId = ?';
-    db.query(sql, [sessionId], (error, results) => {
+// Route to serve the student information page
+app.get('/SInfo', checkAuthenticatedS, (req, res) => {
+    const studentId = req.session.user.studentId;
+    const sql = 'SELECT * FROM student WHERE studentId = ?'
+    db.query(sql, [studentId], (error, results) => {
         if (error) {
             console.error('Database query error:', error.message);
-            return res.status(500).send('Error Retrieving session by ID')
+            return res.status(500).send('Error Retrieving session')
         }
+        res.render('SInfo', {student: req.session.user});
+    })
+    
+});
 
-        if (results.length > 0) {
-            res.render('session', {session: results[0] });
-        } else {
-            res.status(404).send('Session not found');
+app.get('/session', (req, res) => {
+    const sql = `
+    SELECT s.*, s.sessionId, COUNT(ss.sessionId) AS 'current_student'
+    FROM session s
+    LEFT JOIN session_signup ss ON s.sessionId = ss.sessionId
+    GROUP BY s.sessionId
+    `
+    db.query(sql, (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error Retrieving session')
         }
+        for (let i = 0; i < results.length; i++) {
+            const newDate = new Date(results[i].session_date);
+
+            const duration = results[i].duration;
+            const parts = duration.split(":");
+            const hrs = parts[0]
+            const mins = parts[1]
+
+            results[i].session_date = newDate.toLocaleDateString('en-US', {
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric'
+            });
+            results[i].duration = hrs + ' hrs ' + mins + ' mins'
+        }
+        res.render('session', { session: results })
     });
 });
 
