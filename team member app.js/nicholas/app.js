@@ -18,13 +18,9 @@ const bodyParser = require('body-parser');
 const ADMIN_USERNAME = 'admin';
 const ADMIN_PASSWORD = '$2a$10$N9qo8uLOickgx2ZMRZoMy.MrYvJwQ7qE3z/A5.8JZ8Xj5hQYzJvW6'; // "admin123" hashed
 
-
-
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
 // Set up multer for file uploads
 const uploadstudent = multer({
     storage: multer.diskStorage({
@@ -113,22 +109,6 @@ const validateRegistrationT = (req, res, next) => {
         req.flash('error', 'Password should be at least 6 or more characters long');
         req.flash('formData', req.body);
         return res.redirect('/register');
-    }
-    next();
-};
-
-// validateRegistration for admin //
-const validateRegistrationAdmin = (req, res, next) => {
-    const { username, password, name, dob, email, contact } = req.body;
-
-    if (!username || !password || !name || !dob || !email || !contact) {
-        return res.status(400).send('Required field not fill in.');
-    }
-
-    if (password.length < 6) {
-        req.flash('error', 'Password should be at least 6 or more characters long');
-        req.flash('formData', req.body);
-        return res.redirect('/addAdmin');
     }
     next();
 };
@@ -572,65 +552,6 @@ app.get('/deleteTeacher/:id', (req, res) => {
     });
 });
 
-// route for admin
-app.get('/adminlogin', (req, res) => {
-    res.render('admin');
-});
-
-app.get('/addAdmin', (req, res) => {
-    res.render('addAdmin', { messages: req.flash('error'), formData: req.flash('formData')[0] });
-});
-
-app.post('/addAdmin', uploadstudent.single('image'), validateRegistrationAdmin, (req, res) => {
-    const { username, password, name, dob, email, contact } = req.body;
-    let image;
-    if (req.file) {
-        image = req.file.filename; // Store the filename of the uploaded image
-    } else {
-        image = null
-    }
-    const sql = 'INSERT INTO admin (username,  password, name, dob, email, contact, image) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    db.query(sql, [username, password, name, dob, email, contact, image], (error, result) => {
-        if (error) {
-            console.error("Error adding admin:", error);
-            res.status(500).send('Error adding admin');
-        } else {
-            res.redirect('/admin');
-        }
-    });
-});
-
-
-
-app.get('/editAdmin/:id', (req, res) => {
-    const adminId = req.params.id;
-    const sql = 'SELECT * FROM admin WHERE adminId = ?';
-    // Fetch data from MySQL
-    db.query(sql, [adminId], (error, results) => {
-        if (error) {
-            console.error('Database query error:', error.message);
-            return res.status(500).send('Error Retrieving admins');
-        }
-        // Render HTML page with data
-        res.render('editAdmin', { admin: results});
-    });
-});
-
-
-app.post('/editAdmin/:id', (req, res) => {
-    // Get adminId from the request body
-    const adminId = req.params.Id;
-    const { username, Fullname, email, password, dob, contact } = req.body;
-    const sql = 'UPDATE admin SET username = ?, Fullname = ?, email = ?, password = ?, dob = ?, contact = ? WHERE adminId = ?';
-    db.query(sql, [username, Fullname, email, password, dob, contact, adminId], (err, result) => {
-        if (error) {
-            console.error("Error updating admin:", error);
-            res.status(500).send('Error updating admin');
-        } else {
-            res.redirect('/admin');
-        }
-    });
-});
 
 // Middleware to check if user is authenticated as admin
 const ensureAuthenticated = (req, res, next) => {
@@ -671,6 +592,62 @@ app.post('/admin', async (req, res) => {
     }
     
     res.render('admin', { error: 'Invalid credentials' });
+});
+
+app.get('/addAdmin', (req, res) => {
+    res.render('addAdmin', { 
+        messages: req.flash('error'), 
+        formData: req.flash('formData')[0]
+    });
+});
+
+app.post('/addAdmin', uploadstudent.single('image'), (req, res) => {
+    const {username, password, name, dob, email, address, contact} = req.body;
+    let image;
+    if (req.file) {
+        image = req.file.filename; // save only the filename
+    } else {
+        image = null
+    }
+    const sql = 'INSERT INTO admin (username,  password, name, dob, email, address, contact, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    db.query(sql, [username, password, name, dob, email, address, contact, image], (err, result) => {
+        if (err) {
+            throw err;
+        }
+        console.log(result);
+        req.flash('success', 'Added admin successful!');
+        res.redirect('/login');
+    });
+});
+
+app.get('/editAdmin/:id', (req, res) => {
+    const adminId = req.params.id;
+    const sql = 'SELECT * FROM admin WHERE adminId = ?';
+    // Fetch data from MySQL
+    db.query(sql, [adminId], (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error Retrieving admins');
+        }
+        // Render HTML page with data
+        res.render('editAdmin', { admin: results});
+    });
+});
+
+
+app.post('/editAdmin/:id', (req, res) => {
+    // Get adminId from the request body
+    const adminId = req.params.Id;
+    const { username, Fullname, email, password, dob, contact } = req.body;
+    const sql = 'UPDATE admin SET username = ?, Fullname = ?, email = ?, password = ?, dob = ?, contact = ? WHERE adminId = ?';
+    db.query(sql, [username, Fullname, email, password, dob, contact, adminId], (err, result) => {
+        if (error) {
+            console.error("Error updating admin:", error);
+            res.status(500).send('Error updating admin');
+        } else {
+            res.redirect('/admin');
+        }
+    });
 });
 
 

@@ -24,7 +24,7 @@
         </div>
     </nav>
 
-    <<div class="container">
+    <div class="container">
         <h1 class="mt-5">Add admin</h1>
         <% if (messages && messages.length > 0) { %>
             <div class="alert alert-danger">
@@ -33,13 +33,7 @@
                 <% }); %>
             </div>
         <% } %>
-        <form action="/admin" method="POST" class="mt-4" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="adminId">Admin ID:</label>
-                <input type="text" id="adminId" name="adminId" class="form-control" required>
-                <% if (formData && formData.adminId) { %> value="<%= formData.adminId %>" <% } else { %> value="" <% } %>>
-            </div>
-
+        <form action="/addAdmin" method="POST" class="mt-4" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" class="form-control" required 
