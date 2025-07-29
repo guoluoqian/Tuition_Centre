@@ -625,19 +625,10 @@ app.get('/inbox', (req, res) => {
     });
 });
 
-
-
-
 // Route to serve the contact page
 
 app.get('/contact', (req, res) => {
     res.render('contact');
-});
-
-// logout route //
-app.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.redirect('/');
 });
 
 // Route to serve the student information page
@@ -685,6 +676,11 @@ app.get('/session', (req, res) => {
     });
 });
 
+// logout route //
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
+});
 
 // Start the server
 const PORT = process.env.PORT || 3000;
