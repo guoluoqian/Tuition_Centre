@@ -35,7 +35,6 @@
                 <select id="userType" name="userType" class="form-control" required>
                     <option value="student" <% if (formData && formData.grade === 'student') {%> selected <% } %>>student</option>
                     <option value="teacher" <% if (formData && formData.grade === 'teacher') {%> selected <% } %>>teacher</option>
-                    <option value="admin" <% if (formData && formData.grade === 'admin') {%> selected <% } %>>admin</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Login</button>

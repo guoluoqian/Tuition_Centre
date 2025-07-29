@@ -142,51 +142,33 @@
 
 </style>
 <body>
-  <header class="navbar">
-    <div class="logo">LEARNING CENTRE</div>
-    <nav class="nav-links">
-      <a href="/">HOME</a>
-      <a href="/about">ABOUT US</a>
-      <a href="/subjects">SUBJECTS ▼</a>
-      <a href="/location">LOCATIONS ▼</a>
-    <a href="/login" class="login-button">LOG IN</a>
-        <a href="/register" class="register-button">REGISTER</a>
-      <a href="/contact" class="contact-button">CONTACT US</a>
-    </nav>
-  </header>
+
 
 <body>
-    <div class="container mt-5">
-        <h1>📬 Inbox Messages</h1>
-        <a href="/admin" class="btn btn-primary mb-4">← Back to Dashboard</a>
+<div class="container mt-5">
+    <h1>📬 Inbox Messages</h1>
+<a href="/admin" class="btn btn-primary mb-4">← Back to Dashboard</a>
 
-        <ul id="inbox-list" class="list-group">
-            <!-- Messages will be loaded here -->
-        </ul>
-    </div>
+    <ul id="inbox-list" class="list-group">
+        <!-- Messages will be loaded by JavaScript -->
+    </ul>
+</div>
 
-    <script>
-        // Fetch inbox messages
-        fetch('/api/messages')
-            .then(response => response.json())
-            .then(data => {
-                var inboxList = document.getElementById("inbox-list");
+<h2>Admin Inbox</h2>
+<ul id="inboxList"></ul>
 
-                for (var i = 0; i < data.length; i++) {
-                    var li = document.createElement("li");
-                    li.className = "list-group-item";
-                    li.innerHTML = "<strong>" + data[i].sender + ":</strong> " + data[i].message;
-                    inboxList.appendChild(li);
-                }
-
-                if (data.length === 0) {
-                    inboxList.innerHTML = "<li class='list-group-item'>No messages found.</li>";
-                }
-            })
-            .catch(error => {
-                document.getElementById("inbox-list").innerHTML = "<li class='list-group-item text-danger'>Error loading messages.</li>";
-                console.error("Fetch error:", error);
-            });
-    </script>
+<script>
+fetch("http://localhost:3000/inbox")
+  .then(res => res.json())
+  .then(messages => {
+    const list = document.getElementById("inboxList");
+    list.innerHTML = "";
+    for (let i = 0; i < messages.length; i++) {
+        const item = document.createElement("li");
+        item.innerText = `[${messages[i].sender_role}] ${messages[i].sender_name}: ${messages[i].message} (${messages[i].timestamp})`;
+        list.appendChild(item);
+    }
+  });
+</script>
 </body>
 </html>

@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/guoluoqian/Tuition_Centre#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
     "bootstrap": "^5.3.7",
     "connect-flash": "^0.1.1",

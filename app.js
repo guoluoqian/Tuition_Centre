@@ -8,10 +8,15 @@ const flash = require('connect-flash');
 
 const app = express();
 
+const bcrypt = require('bcryptjs');
+
 const multer = require('multer');
 
 const cors = require('cors');
 const bodyParser = require('body-parser');
+
+const ADMIN_USERNAME = 'admin';
+const ADMIN_PASSWORD = '$2a$10$N9qo8uLOickgx2ZMRZoMy.MrYvJwQ7qE3z/A5.8JZ8Xj5hQYzJvW6'; // "admin123" hashed
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -132,11 +137,11 @@ const checkAuthenticatedT = (req, res, next) => {
 
 //check if admin is logged in //
 const checkAuthenticatedA = (req, res, next) => {
-    if (req.session.user) {
+    if (req.session.authenticated && req.session.role === 'admin') {
         return next();
     } else {
         req.flash('error', 'Please log in to view this resource');
-        res.redirect('/adminlogin');
+        res.redirect('/admin-dashboard');
     }
 };
 
@@ -166,7 +171,7 @@ app.post('/api/chat', (req, res) => {
 });
 
 // Admin panel route
-app.get('/admin/chat', (req, res) => {
+app.get('/admin-chat', (req, res) => {
   res.sendFile(__dirname + '/admin-chat.html');
 });
 
@@ -381,10 +386,6 @@ app.get('/teacher', checkAuthenticatedT, (req, res) => {
 });
 
 
-//admin route to render admin page for users NOT DONE//
-app.get('/admin', checkAuthenticatedA, (req, res) => {
-    res.render('admin', {admin: req.session.user});
-});
 
 
 // route to update student information //
@@ -492,15 +493,81 @@ app.get('/deleteTeacher/:id', (req, res) => {
     });
 });
 
-// route for admin
-app.get('/adminlogin', (req, res) => {
-    res.render('admin');
+
+// Middleware to check if user is authenticated as admin
+const ensureAuthenticated = (req, res, next) => {
+  // Check if user is logged in and is an admin
+  if (req.isAuthenticated() && req.user.role === 'admin') {
+    return next();
+  }
+  
+  // If using session-based auth without Passport:
+  /*
+  if (req.session.authenticated && req.session.role === 'admin') {
+    return next();
+  }
+  */
+  
+  // Not authenticated - redirect to login
+  res.redirect('/admin-dashboard');
+};
+
+// Login page
+app.get('/admin-dashboard', (req, res) => {
+    res.render('admin-dashboard', { error: null });
 });
 
-// Route to serve the inbox page
-app.get('/inbox', (req, res) => {
-    res.render('inbox');
+// Login handler
+app.post('/admin', async (req, res) => {
+    const { username, password } = req.body;
+    
+    if (username === ADMIN_USERNAME) {
+        const passwordMatch = await bcrypt.compare(password, ADMIN_PASSWORD);
+        
+        if (passwordMatch) {
+            req.session.authenticated = true;
+            req.session.role = 'admin';
+            req.session.userName = 'Admin';
+            return res.redirect('/admin');
+        }
+    }
+    
+    res.render('admin', { error: 'Invalid credentials' });
 });
+
+
+// Send a message (POST)
+app.post('/send-message', (req, res) => {
+    const senderRole = req.body.role;
+    const senderName = req.body.name;
+    const message = req.body.message;
+
+    const sql = `INSERT INTO messages (sender_role, sender_name, message) VALUES (?, ?, ?)`;
+    db.query(sql, [senderRole, senderName, message], (err, result) => {
+        if (err) {
+            console.error('Insert failed:', err);
+            res.status(500).send('Failed to send message');
+        } else {
+            res.send('Message sent');
+        }
+    });
+});
+
+// Get all messages (GET)
+app.get('/inbox', (req, res) => {
+    const sql = `SELECT * FROM messages ORDER BY timestamp DESC`;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Fetch failed:', err);
+            res.status(500).send('Error fetching messages');
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+
+
 
 // Route to serve the contact page
 
