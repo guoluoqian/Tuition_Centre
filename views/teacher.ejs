@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Teacher Dashboard</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<style>
+
+body {
+
+    font-family: Arial, sans-serif;
+
+    background-color: #f4f4f4;
+
+    margin: 0;
+
+    padding: 20px;
+
+}
+
+
+
+.dashboard-container {
+
+    max-width: 900px;
+
+    margin: auto;
+
+    background: #fff;
+
+    padding: 20px;
+
+    border-radius: 10px;
+
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+
+}
+
+
+
+h1, h2 {
+
+    color: #333;
+
+}
+
+
+
+.section {
+
+    margin-top: 30px;
+
+}
+
+
+
+ul {
+
+    list-style-type: none;
+
+    padding-left: 0;
+
+}
+
+
+
+li {
+
+    background: #eef;
+
+    margin-bottom: 10px;
+
+    padding: 10px;
+
+    border-radius: 5px;
+
+}
+
+
+
+/* Popup styles */
+
+.announcement-popup {
+
+    position: fixed;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    background: rgba(0,0,0,0.6);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+
+.popup-content {
+
+    background: #fff;
+
+    padding: 20px;
+
+    text-align: center;
+
+    border-radius: 10px;
+
+    width: 300px;
+
+}
+
+
+
+.popup-content button {
+
+    margin-top: 15px;
+
+    padding: 8px 16px;
+
+    border: none;
+
+    background: #007bff;
+
+    color: white;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+}
+
+
+
+.popup-content button:hover {
+
+    background: #0056b3;
+
+}
+
+</style>
+
+<body>
+
+    <div class="container">
+
+        <h1 class="mt-5">Dashboard</h1>
+
+        <h1>Welcome <%= teacher.Fullname %></h1>
+
+
+
+            <a href="/logout" class="btn btn-primary">Logout</a>
+
+    </div>
+
+</head>
+
+<body>
+
+
+
+    <div class="announcement-popup" id="announcement">
+
+        <div class="popup-content">
+
+            <h2>📢 Announcement</h2>
+
+            <p>New features have been added to the dashboard!</p>
+
+            <button onclick="closePopup()">Close</button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="dashboard-container">
+
+        <h1>Teacher Dashboard</h1>
+
+
+
+<div class="section" id="inbox-section">
+
+    <h2>📬 Inbox Messages</h2>
+
+    <a href="/inbox" class="btn btn-secondary">View Inbox Messages</a>
+
+</div>
+
+<script>
+
+app.get('/student', (req, res) => {
+
+    db.query(`
+
+        SELECT name, contact, email
+
+        FROM student
+
+        WHERE session.teacher_name = teacher.Fullname
+
+    `, (err, results) => {
+
+        if (err) {
+
+            console.error('Database error:', err);
+
+            return res.status(500).json({
+
+                success: false,
+
+                message: 'Failed to fetch student data'
+
+            });
+
+        }
+
+        res.json({
+
+            success: true,
+
+            data: results
+
+        });
+
+    });
+
+});
+
+</script>
+
+
+
+
+
+</body>
+
+</html>
+
