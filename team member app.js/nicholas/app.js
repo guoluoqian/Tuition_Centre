@@ -8,14 +8,23 @@ const flash = require('connect-flash');
 
 const app = express();
 
+const bcrypt = require('bcryptjs');
+
 const multer = require('multer');
 
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+const ADMIN_USERNAME = 'admin';
+const ADMIN_PASSWORD = '$2a$10$N9qo8uLOickgx2ZMRZoMy.MrYvJwQ7qE3z/A5.8JZ8Xj5hQYzJvW6'; // "admin123" hashed
+
+
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
 // Set up multer for file uploads
 const uploadstudent = multer({
     storage: multer.diskStorage({
@@ -48,8 +57,7 @@ const db = mysql.createConnection({
 
 db.connect((err) => {
     if (err) {
-        console.error('Error connecting to the database:', err);
-        return;
+        throw err;
     }
     console.log('Connected to database');
 });
@@ -75,7 +83,7 @@ app.use(flash());
 
 // validateRegistrationS for student //
 const validateRegistrationS = (req, res, next) => {
-    const {username, Fullname, email, password, dob, contact, grade} = req.body;
+    const { username, Fullname, email, password, dob, contact, grade } = req.body;
 
     if (!username || !Fullname || !email || !password || !dob || !contact || !grade) {
         return res.status(400).send('Required field not fill in.');
@@ -86,18 +94,17 @@ const validateRegistrationS = (req, res, next) => {
         req.flash('formData', req.body);
         return res.redirect('/registerS');
     }
-    next(); // If all validations pass, the next function is called, allowing the request to proceed to the
-            // next middleware function or route handler.
+    next();
 };
 
 // validateRegistration for teacher //
 const validateRegistrationT = (req, res, next) => {
-    const {username, Fullname, email, password, dob, contact, subject, teachingGrade} = req.body;
+    const { username, Fullname, email, password, dob, contact, subject, teachingGrade } = req.body;
 
     if (!username || !Fullname || !email || !password || !dob || !contact || !subject || !teachingGrade) {
         return res.status(400).send('Required field not fill in.');
     }
-    
+
     if (!req.files || !req.files.teachingcert || !req.files.teachingcert[0] || !req.files.resume || !req.files.resume[0]) {
         return res.status(400).send('Required file uploads are not fill in.');
     }
@@ -107,8 +114,23 @@ const validateRegistrationT = (req, res, next) => {
         req.flash('formData', req.body);
         return res.redirect('/register');
     }
-    next(); // If all validations pass, the next function is called, allowing the request to proceed to the
-            // next middleware function or route handler.
+    next();
+};
+
+// validateRegistration for admin //
+const validateRegistrationAdmin = (req, res, next) => {
+    const { username, password, name, dob, email, contact } = req.body;
+
+    if (!username || !password || !name || !dob || !email || !contact) {
+        return res.status(400).send('Required field not fill in.');
+    }
+
+    if (password.length < 6) {
+        req.flash('error', 'Password should be at least 6 or more characters long');
+        req.flash('formData', req.body);
+        return res.redirect('/addAdmin');
+    }
+    next();
 };
 
 // check if student is logged in //
@@ -133,11 +155,11 @@ const checkAuthenticatedT = (req, res, next) => {
 
 //check if admin is logged in //
 const checkAuthenticatedA = (req, res, next) => {
-    if (req.session.user) {
+    if (req.session.authenticated && req.session.role === 'admin') {
         return next();
     } else {
         req.flash('error', 'Please log in to view this resource');
-        res.redirect('/adminlogin');
+        res.redirect('/admin-dashboard');
     }
 };
 
@@ -167,7 +189,7 @@ app.post('/api/chat', (req, res) => {
 });
 
 // Admin panel route
-app.get('/admin/chat', (req, res) => {
+app.get('/admin-chat', (req, res) => {
   res.sendFile(__dirname + '/admin-chat.html');
 });
 
@@ -356,36 +378,93 @@ app.post('/login', (req, res) => {
 
 // student route to render student page for users //
 app.get('/student', checkAuthenticatedS, (req, res) => {
-    const sql = 'SELECT * FROM session';
+    const studentId = req.session.user.studentId;
+
+    // check for available session
+    const sessionA = `
+    SELECT s.*, s.sessionId, COUNT(ss.sessionId) AS 'current_student'
+    FROM session s
+    LEFT JOIN session_signup ss ON s.sessionId = ss.sessionId
+    WHERE s.sessionId NOT IN (SELECT sessionId FROM session_signup WHERE studentId = ?)
+    GROUP BY s.sessionId
+    `;
+    // check for signed up session
+    const sessionS = `
+    SELECT s.*, s.sessionId, COUNT(ss.sessionId) AS 'current_student'
+    FROM session s
+    LEFT JOIN session_signup ss ON s.sessionId = ss.sessionId
+    WHERE s.sessionId IN (SELECT sessionId FROM session_signup WHERE studentId = ?)
+    GROUP BY s.sessionId
+    `;
+
+
     // Fetch data from MySQL
-    db.query(sql, (error, results) => {
-        if (error) {
-            console.error('Database query error:', error.message);
+    db.query(sessionA, [studentId], (error2, results2) => {
+        if (error2) {
+            console.error('Database query error:', error2.message);
             return res.status(500).send('Error Retrieving sessions');
         }
-    // Render HTML page with data
-    res.render('student', {student: req.session.user, session: results});
+        db.query(sessionS, [studentId], (error3, results3) => {
+            if (error3) {
+                console.error('Database query error:', error3.message);
+                return res.status(500).send('Error Retrieving sessions');
+            }
+            for (let i = 0; i < results2.length; i++) {
+                const newDate = new Date(results2[i].session_date);
+
+                const duration = results2[i].duration;
+                const parts = duration.split(":");
+                const hrs = parts[0]
+                const mins = parts[1]
+
+                results2[i].session_date = newDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: '2-digit',
+                    year: 'numeric'
+                });
+                results2[i].duration = hrs + ' hrs ' + mins + ' mins'
+            }
+            for (let i = 0; i < results3.length; i++) {
+                const newDate = new Date(results3[i].session_date);
+
+                const duration = results3[i].duration;
+                const parts = duration.split(":");
+                const hrs = parts[0]
+                const mins = parts[1]
+
+                results3[i].session_date = newDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: '2-digit',
+                    year: 'numeric'
+                });
+                results3[i].duration = hrs + ' hrs ' + mins + ' mins'
+            }
+            // Render HTML page with data
+            res.render('student', {
+                student: req.session.user,
+                sessionA: results2,
+                sessionS: results3
+            });
+        });
     });
 });
 
-// teacher route to render teacher page for users NOT DONE// 
+// teacher route to render teacher page for users DONE// 
 app.get('/teacher', checkAuthenticatedT, (req, res) => {
-    const sql = 'SELECT * FROM teacher';
+    const teacher = req.session.user; //Get the currently logged-in teacher's data
     db.query(sql, (error, results) => {
         if (error) {
             console.error('Database query error:', error.message);
-            return res.status(500).send('Error Retrieving teachers');
+            return res.status(500).send("Error retrieving teacher's info ");
         }
+    //Fetch session taught by teacher
+    const sqlSession = 'SELECT s.sessionId, s.subject, s.session_date, s.session_time FROM session s WHERE s.teacher_name = ?'    
     // Render HTML page with data
     res.render('teacher', {teacher: req.session.user, teachers: results});
     })
 });
 
 
-//admin route to render admin page for users NOT DONE//
-app.get('/admin', checkAuthenticatedA, (req, res) => {
-    res.render('admin', {admin: req.session.user});
-});
 
 
 // route to update student information //
@@ -502,10 +581,16 @@ app.get('/addAdmin', (req, res) => {
     res.render('addAdmin', { messages: req.flash('error'), formData: req.flash('formData')[0] });
 });
 
-app.post('/addAdmin', (req, res) => {
+app.post('/addAdmin', uploadstudent.single('image'), validateRegistrationAdmin, (req, res) => {
     const { username, password, name, dob, email, contact } = req.body;
-    const sql = 'INSERT INTO admin (username,  password, name, dob, email, contact) VALUES (?, ?, ?, ?, ?, ?)';
-    connection.query(sql, [username, password, name, dob, email, contact], (error, result) => {
+    let image;
+    if (req.file) {
+        image = req.file.filename; // Store the filename of the uploaded image
+    } else {
+        image = null
+    }
+    const sql = 'INSERT INTO admin (username,  password, name, dob, email, contact, image) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    db.query(sql, [username, password, name, dob, email, contact, image], (error, result) => {
         if (error) {
             console.error("Error adding admin:", error);
             res.status(500).send('Error adding admin');
@@ -547,9 +632,76 @@ app.post('/editAdmin/:id', (req, res) => {
     });
 });
 
-// Route to serve the inbox page
+// Middleware to check if user is authenticated as admin
+const ensureAuthenticated = (req, res, next) => {
+  // Check if user is logged in and is an admin
+  if (req.isAuthenticated() && req.user.role === 'admin') {
+    return next();
+  }
+  
+  // If using session-based auth without Passport:
+  /*
+  if (req.session.authenticated && req.session.role === 'admin') {
+    return next();
+  }
+  */
+  
+  // Not authenticated - redirect to login
+  res.redirect('/admin-dashboard');
+};
+
+// Login page
+app.get('/admin-dashboard', (req, res) => {
+    res.render('admin-dashboard', { error: null });
+});
+
+// Login handler
+app.post('/admin', async (req, res) => {
+    const { username, password } = req.body;
+    
+    if (username === ADMIN_USERNAME) {
+        const passwordMatch = await bcrypt.compare(password, ADMIN_PASSWORD);
+        
+        if (passwordMatch) {
+            req.session.authenticated = true;
+            req.session.role = 'admin';
+            req.session.userName = 'Admin';
+            return res.redirect('/admin');
+        }
+    }
+    
+    res.render('admin', { error: 'Invalid credentials' });
+});
+
+
+// Send a message (POST)
+app.post('/send-message', (req, res) => {
+    const senderRole = req.body.role;
+    const senderName = req.body.name;
+    const message = req.body.message;
+
+    const sql = `INSERT INTO messages (sender_role, sender_name, message) VALUES (?, ?, ?)`;
+    db.query(sql, [senderRole, senderName, message], (err, result) => {
+        if (err) {
+            console.error('Insert failed:', err);
+            res.status(500).send('Failed to send message');
+        } else {
+            res.send('Message sent');
+        }
+    });
+});
+
+// Get all messages (GET)
 app.get('/inbox', (req, res) => {
-    res.render('inbox');
+    const sql = `SELECT * FROM messages ORDER BY timestamp DESC`;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Fetch failed:', err);
+            res.status(500).send('Error fetching messages');
+        } else {
+            res.json(results);
+        }
+    });
 });
 
 // Route to serve the contact page
@@ -558,29 +710,56 @@ app.get('/contact', (req, res) => {
     res.render('contact');
 });
 
+// Route to serve the student information page
+app.get('/SInfo', checkAuthenticatedS, (req, res) => {
+    const studentId = req.session.user.studentId;
+    const sql = 'SELECT * FROM student WHERE studentId = ?'
+    db.query(sql, [studentId], (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error Retrieving session')
+        }
+        res.render('SInfo', {student: req.session.user});
+    })
+    
+});
+
+app.get('/session', (req, res) => {
+    const sql = `
+    SELECT s.*, s.sessionId, COUNT(ss.sessionId) AS 'current_student'
+    FROM session s
+    LEFT JOIN session_signup ss ON s.sessionId = ss.sessionId
+    GROUP BY s.sessionId
+    `
+    db.query(sql, (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error Retrieving session')
+        }
+        for (let i = 0; i < results.length; i++) {
+            const newDate = new Date(results[i].session_date);
+
+            const duration = results[i].duration;
+            const parts = duration.split(":");
+            const hrs = parts[0]
+            const mins = parts[1]
+
+            results[i].session_date = newDate.toLocaleDateString('en-US', {
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric'
+            });
+            results[i].duration = hrs + ' hrs ' + mins + ' mins'
+        }
+        res.render('session', { session: results })
+    });
+});
+
 // logout route //
 app.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/');
 });
-
-app.get('/session/:id', (req, res) => {
-    const sessionId = req.params.id;
-    const sql = 'SELECT * FROM session WHERE sessionId = ?';
-    db.query(sql, [sessionId], (error, results) => {
-        if (error) {
-            console.error('Database query error:', error.message);
-            return res.status(500).send('Error Retrieving session by ID')
-        }
-
-        if (results.length > 0) {
-            res.render('session', {session: results[0] });
-        } else {
-            res.status(404).send('Session not found');
-        }
-    });
-});
-
 
 // Start the server
 const PORT = process.env.PORT || 3000;
