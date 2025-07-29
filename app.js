@@ -47,7 +47,7 @@ const uploadadmin = multer({
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'RP738964$',
+    password: 'Republic_C207',
     database: 'ca2_team4'
 });
 
@@ -592,6 +592,62 @@ app.post('/admin', async (req, res) => {
     }
     
     res.render('admin', { error: 'Invalid credentials' });
+});
+
+app.get('/addAdmin', (req, res) => {
+    res.render('addAdmin', { 
+        messages: req.flash('error'), 
+        formData: req.flash('formData')[0]
+    });
+});
+
+app.post('/addAdmin', uploadstudent.single('image'), (req, res) => {
+    const {username, password, name, dob, email, address, contact} = req.body;
+    let image;
+    if (req.file) {
+        image = req.file.filename; // save only the filename
+    } else {
+        image = null
+    }
+    const sql = 'INSERT INTO admin (username,  password, name, dob, email, address, contact, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    db.query(sql, [username, password, name, dob, email, address, contact, image], (err, result) => {
+        if (err) {
+            throw err;
+        }
+        console.log(result);
+        req.flash('success', 'Added admin successful!');
+        res.redirect('/login');
+    });
+});
+
+app.get('/editAdmin/:id', (req, res) => {
+    const adminId = req.params.id;
+    const sql = 'SELECT * FROM admin WHERE adminId = ?';
+    // Fetch data from MySQL
+    db.query(sql, [adminId], (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error Retrieving admins');
+        }
+        // Render HTML page with data
+        res.render('editAdmin', { admin: results});
+    });
+});
+
+
+app.post('/editAdmin/:id', (req, res) => {
+    // Get adminId from the request body
+    const adminId = req.params.Id;
+    const { username, Fullname, email, password, dob, contact } = req.body;
+    const sql = 'UPDATE admin SET username = ?, Fullname = ?, email = ?, password = ?, dob = ?, contact = ? WHERE adminId = ?';
+    db.query(sql, [username, Fullname, email, password, dob, contact, adminId], (err, result) => {
+        if (error) {
+            console.error("Error updating admin:", error);
+            res.status(500).send('Error updating admin');
+        } else {
+            res.redirect('/admin');
+        }
+    });
 });
 
 
