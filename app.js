@@ -372,14 +372,16 @@ app.get('/student', checkAuthenticatedS, (req, res) => {
     });
 });
 
-// teacher route to render teacher page for users NOT DONE// 
+// teacher route to render teacher page for users DONE// 
 app.get('/teacher', checkAuthenticatedT, (req, res) => {
-    const sql = 'SELECT * FROM teacher'
+    const teacher = req.session.user; //Get the currently logged-in teacher's data
     db.query(sql, (error, results) => {
         if (error) {
             console.error('Database query error:', error.message);
-            return res.status(500).send('Error Retrieving teachers');
+            return res.status(500).send("Error retrieving teacher's info ");
         }
+    //Fetch session taught by teacher
+    const sqlSession = 'SELECT s.sessionId, s.subject, s.session_date, s.session_time FROM session s WHERE s.teacher_name = ?'    
     // Render HTML page with data
     res.render('teacher', {teacher: req.session.user, teachers: results});
     })
