@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/styles.css">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 </head>
 <style>
     body {
@@ -128,20 +130,13 @@
     border-radius: 12px;
 }
 
-.whatsapp-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #25D366;
+.footer {
+    background-color: #3e3f45;
     color: white;
-    padding: 10px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-weight: bold;
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
 }
-
 </style>
 <body>
   <header class="navbar">
@@ -162,11 +157,11 @@
       <p>Enrol As a Student and Start Your Learning Journey Here!</p>
     </div>
     <div class="hero-images">
-      <div class="pre-primary">
+      <div class="primary">
         <div class="badge">Primary</div>
         <img src="/images/primary.jpg" alt="Primary class">
       </div>
-      <div class="primary">
+      <div class="secondary">
         <div class="badge">Secondary</div>
         <img src="/images/secondary.jpg" alt="Secondary students">
       </div>
@@ -178,37 +173,176 @@
     <p>Operating Hours: Weekdays 12 pm–8 pm, Sat 9 am–6 pm, Sun 9:30 am–4 pm</p>
   </footer>
 
+  <style>
+    .floating_btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 1000;
+}
+
+.whatsapp-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+}
+
+.contact_icon {
+  background: #25D366;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  margin-bottom: 5px; /* Space between icon and text */
+}
+
+.fab.fa-whatsapp {
+  font-size: 30px;
+  color: white;
+}
+
+.text_icon {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+  font-weight: bold;
+}
+  </style>
+
         <div class="floating_btn">
-            <a target="_blank" href="https://api.whatsapp.com/send?phone=+6591067716&text=Hello">
+            <a target="_blank" href="https://api.whatsapp.com/send?phone=6590520778&text=Hello%20Learning%20Centre" class="whatsapp-button">
                 <div class="contact_icon">
                     <i class="fab fa-whatsapp my-float"></i>
                 </div>
             </a>
             <p class="text_icon">Talk to us?</p>
         </div>
-<footer id="react-footer" class="react-footer home-main pt---120 ">
-            <div class="footer-top">
-                <div class="container">
-                    <div class="footer-top-cta">
-                        <div class="row">
-                            <div class="col-lg-7">
-                                <h3>Subscribe To Our Newsletter</h3>
-<h4>Stay up-to-date with our educational offerings and events!</h4>
-                            </div>
-                            <div class="col-lg-5 text-right">
-                                <div class="newsletter_two">
-                                <div class="emaillist" id="es_form_f2-n1"><form action="/contact#es_form_f2-n1" method="post" class="es_subscription_form es_shortcode_form  es_ajax_subscription_form" id="es_subscription_form_6886e08e53523" data-source="ig-es" data-form-id="2"><input type="hidden" name="esfpx_form_id" value="2" /><input type="hidden" name="esfpx_lists[]" value="862d213d7b70" /><input type="hidden" name="es" value="subscribe" />
-			<input type="hidden" name="esfpx_es_form_identifier" value="f2-n1" />
-			<input type="hidden" name="esfpx_es_email_page" value="14" />
-			<input type="hidden" name="esfpx_es_email_page_url" value="https://localhost:3000/contact" />
-			<input type="hidden" name="esfpx_status" value="Unconfirmed" />
-			<input type="hidden" name="esfpx_es-subscribe" id="es-subscribe-6886e08e53523" value="e86380413a" />
-			<label style="position:absolute;top:-99999px;left:-99999px;z-index:-99;" aria-hidden="true"><span hidden>Please leave this field empty.</span><input type="email" name="esfpx_es_hp_email" class="es_required_field" tabindex="-1" autocomplete="-1" value="" /></label><style>form.es_subscription_form[data-form-id="2"] * { box-sizing: border-box; } body {margin: 0;}#esfpx_email_29e79bd7faac1{padding-top:5px;padding-bottom:5px;}#iwgm4{background-color:#545563;color:white;}form[data-form-id="2"] .es-form-field-container .gjs-row{display:flex;justify-content:flex-start;align-items:stretch;flex-wrap:nowrap;}form[data-form-id="2"] .es-form-field-container .gjs-cell{flex-grow:1;flex-basis:100%;}form[data-form-id="2"] .es-form-field-container .gjs-cell[data-highlightable="1"]:empty{border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:dashed;border-right-style:dashed;border-bottom-style:dashed;border-left-style:dashed;border-top-color:rgb(204, 204, 204);border-right-color:rgb(204, 204, 204);border-bottom-color:rgb(204, 204, 204);border-left-color:rgb(204, 204, 204);border-image-source:initial;border-image-slice:initial;border-image-width:initial;border-image-outset:initial;border-image-repeat:initial;height:30px;}form[data-form-id="2"] .es-form-field-container .gjs-row .gjs-cell input[type="checkbox"], form[data-form-id="2"] .es-form-field-container .gjs-row .gjs-cell input[type="radio"]{margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:0px;width:auto;}form[data-form-id="2"] .es-form-field-container .gjs-row{margin-bottom:0.6em;}form[data-form-id="2"] .es-form-field-container label.es-field-label{display:block;}@media (max-width: 320px){form[data-form-id="2"] .es-form-field-container{padding-top:1rem;padding-right:1rem;padding-bottom:1rem;padding-left:1rem;}}</style><div class="es-form-field-container"><div class="gjs-row"></div><div class="gjs-row"><div class="gjs-cell"><input type="email" required class="es-email" name="esfpx_email" autocomplete="off" placeholder="Your Email Address" id="esfpx_email_29e79bd7faac1" /><input type="submit" name="submit" value="Sign Me Up" required id="iwgm4" /></div></div><div class="gjs-row"><div class="gjs-cell"></div></div></div><span class="es_spinner_image" id="spinner-image"><img src="https://www.edufirst.com.sg/wp-content/plugins/email-subscribers/lite/public/images/spinner.gif" alt="Loading" /></span></form><span class="es_subscription_message " id="es_subscription_message_6886e08e53523"></span></div>  
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
+
+<style>
+    /* CSS for the newsletter design */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.4);
+    padding: 50px;
+    text-align: center;
+    max-width: 400px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+h2 {
+    color: #36b75a;
+    margin-bottom: 10px;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+p {
+    color: #666;
+}
+
+.msg {
+    display: none;
+    color: green;
+    margin-top: 40px;
+}
+
+
+input[type="email"] {
+    width: 65%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+}
+
+button {
+    background-color: crimson;
+    color: #fff;
+    padding: 10px 10px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.4s ease;
+}
+
+button:hover {
+    background-color: #65686b;
+}
+</style>
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content=
+        "width=device-width, initial-scale=1.0">
+    <title>Design a Newsletter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h2>Subscribe to GFG Newsletter</h2>
+            <p>Be Updated with latest technologies</p>
+            <form id="thanks" method="POST">
+                <input type="email" name="email" 
+                    id="email" 
+                    placeholder="Enter your email" 
+                    required>
+                <button type="submit">
+                    Subscribe
+                </button>
+            </form>
+            
+            <p class="msg" id="congo">
+                Thanks for subscribing!
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("thanks");
+        const successMessage =
+            document.getElementById("congo");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            successMessage.style.display = "block";
+        });
+    </script>
+</body>
+
+</html>
+</body>
 </body>
 </html>
 

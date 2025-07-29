@@ -23,20 +23,20 @@ const uploadteacher = multer({
         filename: (req, file, cb) => cb(null, file.originalname)
     })
 });
-// for admin
-// const uploadadmin = multer({
-//     storage: multer.diskStorage({
-//         destination: (req, file, cb) => cb(null, 'public/admin'), // Directory to save uploaded files
-//         filename: (req, file, cb) => cb(null, file.originalname)
-//     })
-// });
+//for admin
+const uploadadmin = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => cb(null, 'public/admin'), // Directory to save uploaded files
+        filename: (req, file, cb) => cb(null, file.originalname)
+    })
+});
 
 
 // Database connection
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'Republic_C207',
+    password: 'RP738964$',
     database: 'ca2_team4'
 });
 
