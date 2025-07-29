@@ -149,30 +149,49 @@
       <a href="/contact" class="contact-button">CONTACT US</a>
     </nav>
   </header>
-    <div class="container text-center mt-5">
-        <h2 class="mt-5">Choose your account type</h2>
-        <div class="row justify-content-center mt-4">
-            <div class="col-md-3 mx-3">
-                <a href="/registerT" class="text-decoration-none text-dark">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Teacher</h5>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-3 mx-3">
-                <a href="/registerS" class="text-decoration-none text-dark">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Student</h5>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <p>Already have an account?<a href="/login">Log In</a></p>
+
+  <div class="container">
+    <div>
+      <h3>Available Session</h3>
     </div>
+    <table class="table table-hover small text-center">
+      <thead>
+        <tr>
+          <th width="100">Subject</th>
+          <th width="100">Date</th>
+          <th width="50">Time</th>
+          <th width="50">Teacher</th>
+          <th width="50">Duration</th>
+          <th width="50">Student</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i=0; i < session.length; i++) { %>
+          <tr>
+            <td>
+              <%= session[i].subject %>
+            </td>
+            <td>
+              <%= session[i].session_date %>
+            </td>
+            <td>
+              <%= session[i].session_time %>
+            </td>
+            <td>
+              <%= session[i].teacher_name %>
+            </td>
+            <td>
+              <%= session[i].duration %>
+            </td>
+            <td>
+              <%= session[i].current_student%> / <%= session[i].max_students %>
+            </td>
+          </tr>
+          <% } %>
+      </tbody>
+    </table>
+  </div>
+
 </body>
 
 </html>
