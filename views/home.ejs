@@ -295,19 +295,6 @@ button:hover {
     background-color: #65686b;
 }
 </style>
-<!-- index.html -->
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content=
-        "width=device-width, initial-scale=1.0">
-    <title>Design a Newsletter</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-
 <body>
     <div class="container">
         <div class="card">
@@ -340,9 +327,220 @@ button:hover {
         });
     </script>
 </body>
+</head>
+<!-- Floating Chat Button -->
+<div class="chat-button" onclick="toggleChat()">
+  <div class="chat-icon">💬</div>
+  <div class="chat-label">Chat with us</div>
+</div>
 
-</html>
-</body>
+<!-- Chat Popup -->
+<div id="chatPopup" class="chat-popup">
+  <div class="chat-header">
+    <h3>Chat with Admin</h3>
+    <span class="close-chat" onclick="toggleChat()">×</span>
+    <div class="privacy-note">Privacy - Terms apply</div>
+  </div>
+  <div id="chatMessages" class="chat-messages"></div>
+  <div class="chat-input">
+    <input type="text" id="userMessage" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<style>
+/* Chat Button Styles */
+.chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25D366;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.chat-icon {
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+.chat-label {
+  font-weight: bold;
+}
+
+/* Chat Popup Styles */
+.chat-popup {
+  display: none;
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 300px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  z-index: 1001;
+  flex-direction: column;
+  height: 400px;
+}
+
+.chat-header {
+  background: #25D366;
+  color: white;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-chat {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.privacy-note {
+  font-size: 10px;
+  width: 100%;
+  text-align: center;
+  margin-top: 5px;
+  color: rgba(255,255,255,0.7);
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background: #f5f5f5;
+}
+
+.chat-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background: white;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.chat-input button {
+  margin-left: 5px;
+  background: #25D366;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.message {
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 5px;
+  max-width: 80%;
+}
+
+.user-message {
+  background: #DCF8C6;
+  margin-left: auto;
+}
+
+.admin-message {
+  background: white;
+  margin-right: auto;
+  border: 1px solid #ddd;
+}
+</style>
+
+<script>
+// Chat functionality
+let chatOpen = false;
+
+function toggleChat() {
+  const chatPopup = document.getElementById('chatPopup');
+  chatOpen = !chatOpen;
+  chatPopup.style.display = chatOpen ? 'flex' : 'none';
+  
+  if (chatOpen) {
+    // Load chat history when opening
+    fetchChatHistory();
+    document.getElementById('userMessage').focus();
+  }
+}
+
+function sendMessage() {
+  const messageInput = document.getElementById('userMessage');
+  const message = messageInput.value.trim();
+  
+  if (message) {
+    addMessageToChat(message, 'user');
+    messageInput.value = '';
+    
+    // Send message to server
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        message: message,
+        sender: 'user',
+        timestamp: new Date().toISOString()
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.error) {
+        console.error('Error sending message:', data.error);
+      }
+    });
+  }
+}
+
+function addMessageToChat(message, sender) {
+  const chatMessages = document.getElementById('chatMessages');
+  const messageDiv = document.createElement('div');
+  messageDiv.classList.add('message', sender + '-message');
+  messageDiv.textContent = message;
+  chatMessages.appendChild(messageDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function fetchChatHistory() {
+  fetch('/api/chat')
+    .then(response => response.json())
+    .then(messages => {
+      const chatMessages = document.getElementById('chatMessages');
+      chatMessages.innerHTML = '';
+      
+      messages.forEach(msg => {
+        addMessageToChat(msg.message, msg.sender);
+      });
+    });
+}
+
+// Enable sending message with Enter key
+document.getElementById('userMessage').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    sendMessage();
+  }
+});
+
+// For demo purposes - in real app you'd use WebSockets or polling
+setInterval(fetchChatHistory, 5000);
+</script>
+
 </body>
 </html>
 

@@ -10,6 +10,12 @@ const app = express();
 
 const multer = require('multer');
 
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 // Set up multer for file uploads
 const uploadstudent = multer({
     storage: multer.diskStorage({
@@ -134,6 +140,36 @@ const checkAuthenticatedA = (req, res, next) => {
     }
 };
 
+// In-memory storage for messages (use database in production)
+let chatMessages = [];
+// API endpoint to get chat messages
+app.get('/api/chat', (req, res) => {
+  res.json(chatMessages);
+});
+
+// API endpoint to send new message
+app.post('/api/chat', (req, res) => {
+  const { message, sender } = req.body;
+  
+  if (!message || !sender) {
+    return res.status(400).json({ error: 'Message and sender are required' });
+  }
+  
+  const newMessage = {
+    message,
+    sender,
+    timestamp: new Date().toISOString()
+  };
+  
+  chatMessages.push(newMessage);
+  res.json({ success: true });
+});
+
+// Admin panel route
+app.get('/admin/chat', (req, res) => {
+  res.sendFile(__dirname + '/admin-chat.html');
+});
+
 app.get('/', (req, res) => {
     res.render('home', { user: req.session.user, messages: req.flash('success')});
 });
@@ -155,6 +191,52 @@ app.get('/registerT', (req, res) => {
         formData: req.flash('formData')[0]
     });
 });
+
+//  Function to load users registered this month
+// API route to get inbox messages
+app.get('/api/messages', (req, res) => {
+    db.query('SELECT sender, message FROM messages', (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.json(results);
+    });
+});
+
+// API route to get this month’s registered users
+app.get('/registerS', (req, res) => {
+    db.query(`
+        SELECT name, contact 
+        FROM student
+        WHERE role = 'student'
+    `, (err, results) => {
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).json({ 
+                success: false,
+                message: 'Failed to fetch student data' 
+            });
+        }
+        res.json({
+            success: true,
+            data: results
+        });
+    });
+});
+
+// fetch('/students')
+//   .then(response => response.json())
+//   .then(data => {
+//     if (data.success) {
+//       // Process data.data array
+//       const studentList = document.getElementById("student-list");
+//       studentList.innerHTML = data.data.map(student => 
+//         `<li>${student.name} - ${student.contact}</li>`
+//       ).join('');
+//     } else {
+//       alert('Error loading students: ' + data.message);
+//     }
+//   })
+//   .catch(error => console.error('Error:', error));
+
 
 // register route for students //
 app.post('/registerS', uploadstudent.single('image'), validateRegistrationS, (req, res) => {
