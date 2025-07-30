@@ -456,33 +456,21 @@ app.get('/student', checkAuthenticatedS, (req, res) => {
 // teacher route to render teacher page for users DONE// 
 app.get('/teacher', checkAuthenticatedT, (req, res) => {
     const teacher = req.session.user; // Get the currently logged-in teacher's data
-
-    // 1. First, fetch the teacher's details (if needed)
-    const sqlTeacher = 'SELECT * FROM teacher WHERE email = ?'; // Example query
-
-    db.query(sqlTeacher, [teacher.email], (error, teacherResults) => {
-        if (error) {
-            console.error('Database query error:', error.message);
-            return res.status(500).send("Error retrieving teacher's info");
-        }
-
-        // 2. Fetch sessions taught by the teacher
-        const sqlSession = 'SELECT T.sessionId, T.subject, T.session_date, T.session_time FROM session T WHERE T.teacher_name = ?';
-
+        // Fetch sessions taught by the teacher
+        const sqlSession = 'SELECT s.sessionId, s.subject, s.session_date, s.session_time FROM session s INNER JOIN teacher t on s.teacherId = t.teacherID WHERE T.teacher_name = ?';
         db.query(sqlSession, [teacher.name], (sessionError, sessionResults) => {
             if (sessionError) {
                 console.error('Database session error:', sessionError.message);
                 return res.status(500).send("Error retrieving sessions");
             }
-
-            // 3. Render the page with both teacher and session data
+        
+            // Render the page with both teacher and session data
             res.render('teacher', {
                 teacher: req.session.user, // or teacherResults[0] if you fetched from DB
-                sessions: sessionResults   // Pass sessions to the template
+                sessions: sqlSession   // Pass sessions to the template
             });
         });
     });
-});
 
 
 
