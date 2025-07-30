@@ -596,6 +596,10 @@ app.get('/StudentList', (req, res) => {
         res.render('admin-dashboard', { error: null });
     });
 
+    app.get('/admin', checkAuthenticatedA, (req, res) => {
+    res.render('admin');
+});
+
     // Login handler
     app.post('/admin', async (req, res) => {
         const { username, password } = req.body;
