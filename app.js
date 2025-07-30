@@ -47,7 +47,7 @@ const uploadadmin = multer({
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'RP738964$',
+    password: 'Republic_C207',
     database: 'ca2_team4'
 });
 
@@ -250,6 +250,25 @@ app.get('/TeacherList', (req, res) => {
             });
         }
         res.render('TeacherList', { List: results })
+    });
+});
+
+app.get('/SessionList', (req, res) => {
+    const sql = `SELECT * FROM session`
+    db.query(sql, (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error Retrieving session')
+        }
+        for (let i = 0; i < results.length; i++) {
+            const newDate = new Date(results[i].dob);
+            results[i].dob = newDate.toLocaleDateString('en-US', {
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric'
+            });
+        }
+        res.render('SessionList', { List: results })
     });
 });
 
@@ -951,25 +970,6 @@ app.post('/editSession/:id', (req, res) => {
 
         req.flash('success', 'Session updated successfully!');
         res.redirect('/session');
-    });
-});
-
-app.get('/SessionList', (req, res) => {
-    const sql = `SELECT * FROM session`
-    db.query(sql, (error, results) => {
-        if (error) {
-            console.error('Database query error:', error.message);
-            return res.status(500).send('Error Retrieving session')
-        }
-        for (let i = 0; i < results.length; i++) {
-            const newDate = new Date(results[i].dob);
-            results[i].dob = newDate.toLocaleDateString('en-US', {
-                month: 'short',
-                day: '2-digit',
-                year: 'numeric'
-            });
-        }
-        res.render('SessionList', { List: results })
     });
 });
 
