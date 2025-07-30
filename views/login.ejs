@@ -13,11 +13,15 @@
         crossorigin="anonymous"></script>
 </head>
 <style>
-    body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #fff;
-    color: #333;
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-image: url('images/R.jpg'); /* adjust path if needed */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: Arial, sans-serif;
 }
 
     .top-bar {
@@ -141,14 +145,70 @@
     padding: 20px 0;
     position: relative;
 }
+
+.logos img {
+
+            height: 100px;
+        }
+
+.home-btn {
+  background-color: #1ee6f4;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.session-btn {
+  background-color: #c780c5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+} 
+
+.container {
+    padding: 20px;
+    text-align: left; /* only affects container content, not the form */
+}
+
+.form-container {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 50px;
+    margin-top: 20px;
+}
+
+form {
+    width: 300px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    text-align: left; /* aligns labels and inputs inside form */
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left; /* ensures label/input inside group are left-aligned */
+}
+
+/* Footer design */
+.footer {
+    background-color: #3e3f45;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 30px;
+}
 </style>
 
 <body>
   <header class="navbar">
+            <img src="/images/rp-logo.jpg" alt="EDUFIRST Logo">
+        </div>
     <div class="logo">LEARNING CENTRE</div>
     <nav class="nav-links">
-      <a href="/">HOME</a>
-      <a href="/session">SESSIONS ▼</a>
+      <a href="/" class="home-btn">HOME</a>
+      <a href="/session" class="session-btn">SESSIONS ▼</a>
     <a href="/login" class="login-button">LOG IN</a>
         <a href="/register" class="register-button">REGISTER</a>
       <a href="/contact" class="contact-button">CONTACT US</a>
@@ -192,7 +252,10 @@
             <p class="mt-4">Dont have a account?<a href="/">Sign up</a></p>
         </form>
     </div>
-
+  <footer class="footer">
+    <p>Tel: +65 90520778 | Email: enquiry@team4.com.sg</p>
+    <p>Operating Hours: Weekdays 12 pm–8 pm, Sat 9 am–6 pm, Sun 9:30 am–4 pm</p>
+  </footer>
 </body>
 
 </html>
