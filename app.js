@@ -861,6 +861,50 @@ app.post('/addSession', (req, res) => {
     });
 });
 
+// GET route for editing a session
+app.get('/editSession/:id', (req, res) => {
+    const sessionId = req.params.id;
+    const sql = 'SELECT * FROM session WHERE sessionId = ?';
+    
+    db.query(sql, [sessionId], (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            req.flash('error', 'Error retrieving session data');
+            return res.redirect('/session');
+        }
+
+        // Check if session exists
+        if (results.length === 0) {
+            req.flash('error', 'Session not found');
+            return res.redirect('/session');
+        }
+
+        res.render('editSession', { 
+            session: session,
+            messages: req.flash()
+        });
+    });
+});
+
+// POST route for updating a session
+app.post('/editSession/:id', (req, res) => {
+    const sessionId = req.params.id;
+    const { subject, session_date, session_time, teacher_name, duration, max_students } = req.body;
+
+    const sql = 'UPDATE session SET subject = ?, session_date = ?, session_time = ?, teacher_name = ?, duration = ?, max_students = ? WHERE sessionId = ?';
+    
+    db.query(sql, [subject, session_date, session_time, teacher_name, duration, max_students, sessionId], (error, result) => {
+        if (error) {
+            console.error("Error updating session:", error);
+            req.flash('error', 'Failed to update session');
+            return res.redirect(`/editSession/${sessionId}`); // Return to edit page with error
+        }
+        
+        req.flash('success', 'Session updated successfully!');
+        res.redirect('/session');
+    });
+});
+
 app.post('/signup/:id', (req, res) => {
     if (!req.session.user || req.session.user.role !== 'student') {
         req.flash('error', 'Only students can sign up.');
