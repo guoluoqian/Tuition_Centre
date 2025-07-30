@@ -705,26 +705,44 @@ app.get('/editAdmin/:id', (req, res) => {
 });
 
 
-app.post('/editAdmin/:id', uploadadmin.single('image'), (req, res) => {
+app.post('/editAdmin/:id', uploadadmin.single('image'),(req, res) => {
     // Get adminId from the request body
     const adminId = req.params.id;
     const { username, password, name, dob, email, contact } = req.body;
     let image = req.body.currentImage;
-    if (req.file) {
+    if (req.file){
         image = req.file.filename;
     }
 
-    const sql = 'UPDATE admin SET username = ?, password = ?, name = ?, email = ?, dob = ?, contact = ?, image = ? WHERE adminId = ?';
-    connection.query(sql, [username, password, name, dob, email, contact, image, adminId], (error, result) => {
+    const sql = 'UPDATE admin SET username = ?, password = ?, name = ?, dob = ?, email = ?, contact = ?, image = ? WHERE adminId = ?';
+    db.query(sql, [username, password, name, dob, email, contact, image, adminId], (error, results) => {
         if (error) {
             console.error("Error updating admin:", error);
             res.status(500).send('Error updating admin');
         } else {
-            res.redirect('/admin');
+        res.redirect('/adminList');
         }
     });
 });
 
+app.get('/adminList', (req, res) => {
+     const sql = `SELECT * FROM admin`
+        db.query(sql, (error, results) => {
+            if (error) {
+                console.error('Database query error:', error.message);
+                return res.status(500).send('Error Retrieving session')
+            }
+            for (let i = 0; i < results.length; i++) {
+                const newDate = new Date(results[i].dob);
+                results[i].dob = newDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: '2-digit',
+                    year: 'numeric'
+                });
+            }
+            res.render('adminList', { List: results })
+        });
+    });
 
 // Send a message (POST)
 app.post('/send-message', (req, res) => {
