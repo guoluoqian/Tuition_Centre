@@ -115,6 +115,53 @@
   border-radius: 4px;
   font-weight: bold;
 }
+/* Centered content area with soft background */
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #fdfdfd;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.08);
+}
+
+/* Account Info heading */
+.container h3 {
+  font-size: 24px;
+  margin-bottom: 25px;
+  color: #333;
+  border-bottom: 2px solid #f4511e;
+  padding-bottom: 10px;
+}
+
+/* Each detail paragraph */
+.container p {
+  font-size: 16px;
+  margin: 12px 0;
+  line-height: 1.5;
+}
+
+/* Bold labels */
+.container p b {
+  color: #555;
+}
+
+/* Profile image styling */
+.container img {
+  max-width: 150px;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  margin-top: 10px;
+}
+
+/* Buttons spacing */
+.container a.edit-btn,
+.container a.back-btn {
+  margin-right: 10px;
+  margin-top: 20px;
+  display: inline-block;
+}
 </style>
 
 <body>
@@ -123,14 +170,6 @@
     <nav class="nav-links">
       <a href="/" class="home-btn">HOME</a>
       <a href="/session" class="session-btn">SESSIONS</a>
-      <a href="/login" class="login-button">LOG IN</a>
-
-      <div class="dropdown">
-        <a href="/register" class="register-button">REGISTER ▼</a>
-        <ul class="dropdown-menu">
-          <li><a href="/registerT">Be a Teacher</a></li>
-          <li><a href="/registerS">Be a Student</a></li>
-        </ul>
       </div>
 
       <a href="/contact" class="contact-button">CONTACT US</a>
