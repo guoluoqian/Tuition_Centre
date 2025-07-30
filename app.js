@@ -242,6 +242,25 @@ app.get('/StudentList', (req, res) => {
     });
 });
 
+app.get('/TeacherList', (req, res) => {
+    const sql = `SELECT * FROM teacher`
+    db.query(sql, (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error Retrieving session')
+        }
+        for (let i = 0; i < results.length; i++) {
+            const newDate = new Date(results[i].dob);
+            results[i].dob = newDate.toLocaleDateString('en-US', {
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric'
+            });
+        }
+        res.render('TeacherList', { List: results })
+    });
+});
+
 // register route for students //
 app.post('/registerS', uploadstudent.single('image'), validateRegistrationS, (req, res) => {
     const { username, Fullname, email, password, dob, address, contact, grade } = req.body;
@@ -581,7 +600,20 @@ app.get('/deleteTeacher/:id', (req, res) => {
             console.error("Error deleting teacher:", error);
             res.status(500).send('Error deleting teacher');
         } else {
-            res.redirect('/');
+            res.redirect('/TeacherList');
+        }
+    });
+});
+
+app.get('/deleteAdmin/:id', (req, res) => {
+    const adminId = req.params.id;
+    const sql = 'DELETE FROM admin WHERE adminId = ?';
+    db.query(sql, (adminId), (error, results) => {
+        if (error) {
+            console.error("Error deleting admin:", error);
+            res.status(500).send('Error deleting admin');
+        } else {
+            res.redirect('/adminList');
         }
     });
 });
