@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
 <style>
 body {
     font-family: Arial, sans-serif;
@@ -27,7 +29,7 @@ h1, h2 {
 }
 
 .section {
-    margin-top: 30px;
+    margin: 30px;
 }
 
 ul {
@@ -40,6 +42,16 @@ li {
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 5px;
+}
+#manage-admin {
+    text-align: center;
+    margin-top: 20px;
+}
+#manage-admin a {
+  display: inline-block;
+  margin: auto;
+  padding: 10px 20px;
+  border-radius: 5px;
 }
 
 /* Popup styles */
@@ -78,19 +90,12 @@ li {
 }
 </style>
 <body>
-    <div class="container">
-        <h1 class="mt-5">Dashboard</h1>
-        <p>Welcome, username</p>
-
-            <a href="/logout" class="btn btn-primary">Logout</a>
-    </div>
-</head>
-<body>
 
     <div class="announcement-popup" id="announcement">
         <div class="popup-content">
             <h2>📢 Announcement</h2>
             <p>Welcome Back!</p>
+            <p>Welcome back Luoqian!</p>
             <button onclick="closePopup()">Close</button>
         </div>
     </div>
@@ -104,15 +109,17 @@ li {
 </div>
 
         <div class="section" id="user-data-section">
-            <h2>👥 Users Registered</h2>
-            <a href="/StudentList" class="btn btn-secondary">Student List</a>
-            <a href="/TeacherList" class="btn btn-secondary">Teacher List</a>
+            <h2>👥 Users Registered This Month</h2>
+            <p id="user-count">Loading...</p>
+            <ul id="user-list">
+                <!-- User data will be loaded here -->
+            </ul>
         </div>
-        <div class="section" id="manage-admin">
+    </div>
+        <div class="section" id="manage-admin" >
             <h2>🛠️ Manage Admins</h2>
-            <a href="/addAdmin" class="btn btn-secondary">Add Admin</a><br><br>
-            <a href="/editAdmin" class="btn btn-secondary">Edit Admin</a><br><br>
-            <a href="/deleteAdmin" class="btn btn-secondary">Delete Admin</a>
+            <a href="/addAdmin" class="btn btn-secondary">Add New Admin</a><br><br>
+            <a href="/adminList" class="btn btn-secondary">View Admins</a><br><br>
     </div>
 
 <script>
@@ -189,6 +196,8 @@ li {
       color: #666;
       margin-bottom: 5px;
     }
+
+    
   </style>
 </head>
 <body>
