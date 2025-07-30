@@ -47,11 +47,12 @@ const uploadadmin = multer({
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'RP738964$',
+    password: 'Republic_C207',
     database: 'ca2_team4'
 });
 
 //RP738964$
+//Republic_C207
 
 db.connect((err) => {
     if (err) {
@@ -456,42 +457,42 @@ app.get('/student', checkAuthenticatedS, (req, res) => {
 // teacher route to render teacher page for users DONE// 
 app.get('/teacher', checkAuthenticatedT, (req, res) => {
     const teacher = req.session.user.username; // Get the currently logged-in teacher's data
-        // Fetch sessions taught by the teacher
-        const sqlSession = `
+    // Fetch sessions taught by the teacher
+    const sqlSession = `
         SELECT s.*, s.sessionId, COUNT(ss.sessionId) AS 'current_student'
         FROM session s 
         LEFT JOIN session_signup ss ON s.sessionId = ss.sessionId
         WHERE s.teacher_name = ?
         GROUP BY s.sessionId
         `;
-        db.query(sqlSession, [teacher], (sessionError, sessionResults) => {
-            if (sessionError) {
-                console.error('Database session error:', sessionError.message);
-                return res.status(500).send("Error retrieving sessions");
-            }
-            for (let i = 0; i < sessionResults.length; i++) {
-                const newDate = new Date(sessionResults[i].session_date);
+    db.query(sqlSession, [teacher], (sessionError, sessionResults) => {
+        if (sessionError) {
+            console.error('Database session error:', sessionError.message);
+            return res.status(500).send("Error retrieving sessions");
+        }
+        for (let i = 0; i < sessionResults.length; i++) {
+            const newDate = new Date(sessionResults[i].session_date);
 
-                const duration = sessionResults[i].duration;
-                const parts = duration.split(":");
-                const hrs = parts[0]
-                const mins = parts[1]
+            const duration = sessionResults[i].duration;
+            const parts = duration.split(":");
+            const hrs = parts[0]
+            const mins = parts[1]
 
-                sessionResults[i].session_date = newDate.toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: '2-digit',
-                    year: 'numeric'
-                });
-                sessionResults[i].duration = hrs + ' hrs ' + mins + ' mins'
-            }
-        
-            // Render the page with both teacher and session data
-            res.render('teacher', {
-                teacher: req.session.user, // or teacherResults[0] if you fetched from DB
-                sessions: sessionResults   // Pass sessions to the template
+            sessionResults[i].session_date = newDate.toLocaleDateString('en-US', {
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric'
             });
+            sessionResults[i].duration = hrs + ' hrs ' + mins + ' mins'
+        }
+
+        // Render the page with both teacher and session data
+        res.render('teacher', {
+            teacher: req.session.user, // or teacherResults[0] if you fetched from DB
+            sessions: sessionResults   // Pass sessions to the template
         });
     });
+});
 
 
 
@@ -568,23 +569,58 @@ app.get('/editTeacher/:id', (req, res) => {
     });
 });
 
-app.post('/editTeacher/:id', uploadteacher.single('image'), (req, res) => {
-    const teacherId = req.params.id;
-    const { username, Fullname, email, password, dob, contact } = req.body;
-    let image = req.body.currentImage;
-    if (req.file) {
-        image = req.file.filename;
+app.post('/editTeacher/:id', uploadteacher.fields([
+    { name: 'teachingcert' },
+    { name: 'resume' },
+    { name: 'image' }
+]), validateRegistrationT, (req, res) => {
+    const { username, Fullname, email, password, dob, address, contact, subject, teachingGrade } = req.body;
+    let teachingcert;
+    let resume;
+    let image;
+
+    if (req.files && req.files.teachingcert) {
+        teachingcert = req.files.teachingcert[0].filename; // save only the filename
+    } else {
+        teachingcert = null
+    }
+
+    if (req.files && req.files.resume) {
+        resume = req.files.resume[0].filename; // save only the filename
+    } else {
+        image = null
+    }
+
+    if (req.files && req.files.image) {
+        image = req.files.image[0].filename; // save only the filename
+    } else {
+        image = null
     }
     const sql = 'UPDATE teacher SET username = ?, Fullname = ?, email = ?, password = ?, dob = ?, address = ?, contact = ?, subject = ?, teachingcert = ?, teachingGrade = ?, resume = ?, image = ? WHERE teacherId = ?';
-    db.query(sql, [username, Fullname, email, password, dob, address, contact,
-        subject, teachingcert, teachingGrade, resume, image, teacherId], (error, results) => {
-            if (error) {
-                console.error("Error updating teacher:", error);
-                res.status(500).send('Error updating teacher');
-            } else {
-                res.redirect('/');
+    db.query(sql, [username, Fullname, email, password, dob, address, contact, subject, teachingcert, teachingGrade, resume, image, teacherId], (error, results) => {
+        if (error) {
+            console.error("Error updating student:", error);
+            res.status(500).send('Error updating student');
+        } else {
+            if (req.session.user && req.session.user.studentId == studentId) {
+                // Update the session with the new values
+                req.session.user.username = username;
+                req.session.user.Fullname = Fullname;
+                req.session.user.email = email;
+                req.session.user.password = password;
+                req.session.user.dob = dob;
+                req.session.user.address = address;
+                req.session.user.contact = contact;
+                req.session.user.grade = grade;
+                if (image) {
+                    req.session.user.image = image;
+                }
             }
-        });
+            if (req.session.user && req.session.user.role === 'student') {
+                res.redirect('/Student');
+            } else { res.redirect('/StudentList'); }
+        }
+    });
 });
 
 // routes to delete student and teacher records //
@@ -714,12 +750,12 @@ app.get('/editAdmin/:id', (req, res) => {
 });
 
 
-app.post('/editAdmin/:id', uploadadmin.single('image'),(req, res) => {
+app.post('/editAdmin/:id', uploadadmin.single('image'), (req, res) => {
     // Get adminId from the request body
     const adminId = req.params.id;
     const { username, password, name, dob, email, contact } = req.body;
     let image = req.body.currentImage;
-    if (req.file){
+    if (req.file) {
         image = req.file.filename;
     }
 
@@ -729,29 +765,29 @@ app.post('/editAdmin/:id', uploadadmin.single('image'),(req, res) => {
             console.error("Error updating admin:", error);
             res.status(500).send('Error updating admin');
         } else {
-        res.redirect('/adminList');
+            res.redirect('/adminList');
         }
     });
 });
 
 app.get('/adminList', (req, res) => {
-     const sql = `SELECT * FROM admin`
-        db.query(sql, (error, results) => {
-            if (error) {
-                console.error('Database query error:', error.message);
-                return res.status(500).send('Error Retrieving session')
-            }
-            for (let i = 0; i < results.length; i++) {
-                const newDate = new Date(results[i].dob);
-                results[i].dob = newDate.toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: '2-digit',
-                    year: 'numeric'
-                });
-            }
-            res.render('adminList', { List: results })
-        });
+    const sql = `SELECT * FROM admin`
+    db.query(sql, (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error Retrieving session')
+        }
+        for (let i = 0; i < results.length; i++) {
+            const newDate = new Date(results[i].dob);
+            results[i].dob = newDate.toLocaleDateString('en-US', {
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric'
+            });
+        }
+        res.render('adminList', { List: results })
     });
+});
 
 // Send a message (POST)
 app.post('/send-message', (req, res) => {
@@ -886,7 +922,7 @@ app.post('/addSession', (req, res) => {
 app.get('/editSession/:id', (req, res) => {
     const sessionId = req.params.id;
     const sql = 'SELECT * FROM session WHERE sessionId = ?';
-    
+
     db.query(sql, [sessionId], (error, results) => {
         if (error) {
             console.error('Database query error:', error.message);
@@ -900,7 +936,7 @@ app.get('/editSession/:id', (req, res) => {
             return res.redirect('/session');
         }
 
-        res.render('editSession', { 
+        res.render('editSession', {
             session: session,
             messages: req.flash()
         });
@@ -913,14 +949,14 @@ app.post('/editSession/:id', (req, res) => {
     const { subject, session_date, session_time, teacher_name, duration, max_students } = req.body;
 
     const sql = 'UPDATE session SET subject = ?, session_date = ?, session_time = ?, teacher_name = ?, duration = ?, max_students = ? WHERE sessionId = ?';
-    
+
     db.query(sql, [subject, session_date, session_time, teacher_name, duration, max_students, sessionId], (error, result) => {
         if (error) {
             console.error("Error updating session:", error);
             req.flash('error', 'Failed to update session');
             return res.redirect(`/editSession/${sessionId}`); // Return to edit page with error
         }
-        
+
         req.flash('success', 'Session updated successfully!');
         res.redirect('/session');
     });
