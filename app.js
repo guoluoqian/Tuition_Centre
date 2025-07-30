@@ -654,6 +654,20 @@ app.get('/deleteAdmin/:id', (req, res) => {
     });
 });
 
+app.get('/deleteSession/:id', (req, res) => {
+    const sessionId = req.params.id;
+    const sql = 'DELETE FROM session WHERE sessionId = ?';
+    db.query(sql, (sessionId), (error, results) => {
+        if (error) {
+            console.error("Error deleting admin:", error);
+            res.status(500).send('Error deleting admin');
+        } else {
+            res.redirect('/sessionList');
+        }
+    });
+});
+
+
 
 // Middleware to check if user is authenticated as admin
 const ensureAuthenticated = (req, res, next) => {
@@ -701,10 +715,13 @@ app.post('/admin', async (req, res) => {
 });
 
 app.get('/addAdmin', (req, res) => {
-    res.render('addAdmin', { messages: req.flash('error'), formData: req.flash('formData')[0] });
+    res.render('addAdmin', {
+        messages: req.flash('error'),
+        formData: req.flash('formData')[0]
+    });
 });
 
-app.post('/addAdmin', uploadadmin.single('image'),(req, res) => {
+app.post('/addAdmin', uploadadmin.single('image'), (req, res) => {
     const { username, password, name, dob, email, contact } = req.body;
     let image;
     if (req.file) {
