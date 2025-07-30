@@ -243,7 +243,6 @@ app.get('/StudentList', (req, res) => {
 });
 
 app.get('/TeacherList', (req, res) => {
-    user = req.session.user
     const sql = `SELECT * FROM teacher`
     db.query(sql, (error, results) => {
         if (error) {
@@ -258,7 +257,7 @@ app.get('/TeacherList', (req, res) => {
                 year: 'numeric'
             });
         }
-        res.render('TeacherList', { List: results, user: user})
+        res.render('TeacherList', { List: results })
     });
 });
 
@@ -819,6 +818,41 @@ app.post('/session', (req, res) => {
         console.log(result);
         req.flash('success', 'Session Added');
         res.redirect('/session');
+    });
+});
+
+app.get('/addSession', (req, res) => {
+    res.render('addSession', {
+        messages: req.flash('error'),
+        formData: req.flash('formData')[0]
+    });
+});
+
+// register route for sessions, admin only //
+app.post('/addSession', (req, res) => {
+    const { subject, session_date, session_time, teacher_name, duration, max_students } = req.body;
+    const sql = 'INSERT INTO student (username, Fullname, email, password, dob, address, contact, grade, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    db.query(sql, [subject, session_date, session_time, teacher_name, duration, max_students], (err, result) => {
+        if (err) {
+            console.error('Database query error:', err.message);
+            return res.status(500).send('Error Retrieving session')
+        }
+        for (let i = 0; i < result.length; i++) {
+            const newDate = new Date(result[i].session_date);
+
+            const duration = result[i].duration;
+            const parts = duration.split(":");
+            const hrs = parts[0]
+            const mins = parts[1]
+
+            result[i].session_date = newDate.toLocaleDateString('en-US', {
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric'
+            });
+            results[i].duration = hrs + ' hrs ' + mins + ' mins'
+        }
+        res.render('session', { session: result })
     });
 });
 
