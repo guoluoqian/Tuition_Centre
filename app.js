@@ -47,12 +47,12 @@ const uploadadmin = multer({
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'RP738964$',
+    password: 'Republic_C207',
     database: 'ca2_team4'
 });
 
 //RP738964$
-//Republic_C207
+
 db.connect((err) => {
     if (err) {
         throw err;
