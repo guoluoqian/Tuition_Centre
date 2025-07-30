@@ -96,9 +96,9 @@
   <header class="navbar">
     <div class="logo">LEARNING CENTRE</div>
     <nav class="nav-links">
-      <a href="/teacher" class="home-btn">HOME</a>
+      <a href="/teacher">HOME</a>
       <a href="/contact" class="contact-button">CONTACT US</a>
-      <a href="/home" class="logout-button">LOGOUT</a>
+      <a href="/logout" class="logout-button">LOGOUT</a>
     </nav>
   </header>
 
@@ -118,25 +118,22 @@
         </tr>
       </thead>
       <tbody>
-        <% for(let i=0; i < sessionS.length; i++) { %>
+        <% for(let i=0; i < sessions.length; i++) { %>
           <tr>
             <td>
-              <%= sessionS[i].subject %>
+              <%= sessions[i].subject %>
             </td>
             <td>
-              <%= sessionS[i].session_date %>
+              <%= sessions[i].session_date %>
             </td>
             <td>
-              <%= sessionS[i].session_time %>
+              <%= sessions[i].session_time %>
             </td>
             <td>
-              <%= sessionS[i].teacher_name %>
+              <%= sessions[i].duration %>
             </td>
             <td>
-              <%= sessionS[i].duration %>
-            </td>
-            <td>
-              <%= sessionS[i].current_student%> / <%= sessionS[i].max_students %>
+              <%= sessions[i].current_student%> / <%= sessions[i].max_students %>
             </td>
           </tr>
           <% } %>
