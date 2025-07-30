@@ -158,9 +158,13 @@
 
 <body>
   <header class="navbar">
-    <div class="logo"> Teacher Page </div>
+          <div class="logos">
+        <img src="/images/rp-logo.jpg" alt="EDUFIRST Logo">
+        </div>
+    <div class="logo">LEARNING CENTRE</div>
     <nav class="nav-links">
-      <a href="/teacher" class="home-btn">HOME</a>
+      <a href="/teacher">HOME</a>
+      <a href="/editTeacher/<%= teacher.teacherId %>" class="profile-box">@<%= teacher.username %></a>
       <a href="/contact" class="contact-button">CONTACT US</a>
       <a href="/logout" class="logout-button">LOGOUT</a>
     </nav>
