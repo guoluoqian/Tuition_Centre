@@ -47,7 +47,7 @@ const uploadadmin = multer({
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'RP738964$',
+    password: 'Republic_C207',
     database: 'ca2_team4'
 });
 
@@ -137,7 +137,7 @@ const checkAuthenticatedS = (req, res, next) => {
         return next();
     } else {
         req.flash('error', 'Please log in to view this resource');
-        res.redirect('/studentlogin');
+        res.redirect('/login');
     }
 };
 
@@ -147,7 +147,7 @@ const checkAuthenticatedT = (req, res, next) => {
         return next();
     } else {
         req.flash('error', 'Please log in to view this resource');
-        res.redirect('/teacherlogin');
+        res.redirect('/login');
     }
 };
 
