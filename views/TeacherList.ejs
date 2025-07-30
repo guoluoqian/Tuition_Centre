@@ -83,7 +83,7 @@
 <body>
   <div class="container">
     <h1 class="mt-5">Dashboard</h1>
-    <p>Welcome, username</p>
+    <p>Welcome</p>
     <a href="/admin" class="btn btn-primary">Back</a>
     <a href="/logout" class="btn btn-primary">Logout</a>
   </div>
@@ -103,7 +103,7 @@
       <h1>Admin Dashboard</h1>
       <div class="container">
         <div>
-          <h3>Registered Student</h3>
+          <h3>Registered Teacher</h3>
         </div>
         <table class="table table-hover small text-center">
           <thead>
@@ -115,7 +115,8 @@
               <th width="50">Date of Birth</th>
               <th width="50">Address</th>
               <th width="50">Contact</th>
-              <th width="50">Grade</th>
+              <th width="50">Subject</th>
+              <th width="50">Teaching Grade</th>
             </tr>
           </thead>
           <tbody>
@@ -143,11 +144,14 @@
                   <%= List[i].contact%>
                 </td>
                 <td>
-                  <%= List[i].grade%>
+                  <%= List[i].subject%>
                 </td>
                 <td>
-                  <a href="/editStudent/<%= List[i].studentId %>">edit</a>
-                  <a href="/deleteStudent/<%= List[i].studentId %>" style="color: red;">Delete</a>
+                  <%= List[i].teachingGrade%>
+                </td>
+                <td>
+                  <a href="/editTeacher/<%= List[i].teacherId %>">Edit</a>
+                  <a href="/deleteTeacher/<%= List[i].teacherId %>" style="color: red;">Delete</a>
                 </td>
               </tr>
               <% } %>
