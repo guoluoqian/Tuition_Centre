@@ -115,6 +115,22 @@ const validateRegistrationT = (req, res, next) => {
     next();
 };
 
+// validateRegistration for admin //
+const validateRegistrationAdmin = (req, res, next) => {
+    const { username, password, name, dob, email, contact } = req.body;
+
+    if (!username || !password || !name || !dob || !email || !contact) {
+        return res.status(400).send('Required field not fill in.');
+    }
+
+    if (password.length < 6) {
+        req.flash('error', 'Password should be at least 6 or more characters long');
+        req.flash('formData', req.body);
+        return res.redirect('/addAdmin');
+    }
+    next();
+};
+
 // check if student is logged in //
 const checkAuthenticatedS = (req, res, next) => {
     if (req.session.user) {
@@ -605,54 +621,59 @@ app.get('/StudentList', (req, res) => {
         });
     });
 
-    app.post('/addAdmin', uploadstudent.single('image'), (req, res) => {
-        const { username, password, name, dob, email, address, contact } = req.body;
-        let image;
-        if (req.file) {
-            image = req.file.filename; // save only the filename
+    app.post('/addAdmin', uploadadmin.single('image'), validateRegistrationAdmin, (req, res) => {
+    const { username, password, name, dob, email, contact } = req.body;
+    let image;
+    if (req.file) {
+        image = req.file.filename; // Store the filename of the uploaded image
+    } else {
+        image = null
+    }
+    const sql = 'INSERT INTO admin (username,  password, name, dob, email, contact, image) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    db.query(sql, [username, password, name, dob, email, contact, image], (error, result) => {
+        if (error) {
+            console.error("Error adding admin:", error);
+            res.status(500).send('Error adding admin');
         } else {
-            image = null
+            res.redirect('/admin');
         }
-        const sql = 'INSERT INTO admin (username,  password, name, dob, email, address, contact, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-        db.query(sql, [username, password, name, dob, email, address, contact, image], (err, result) => {
-            if (err) {
-                throw err;
-            }
-            console.log(result);
-            req.flash('success', 'Added admin successful!');
-            res.redirect('/login');
-        });
     });
+});
 
     app.get('/editAdmin/:id', (req, res) => {
-        const adminId = req.params.id;
-        const sql = 'SELECT * FROM admin WHERE adminId = ?';
-        // Fetch data from MySQL
-        db.query(sql, [adminId], (error, results) => {
-            if (error) {
-                console.error('Database query error:', error.message);
-                return res.status(500).send('Error Retrieving admins');
-            }
-            // Render HTML page with data
-            res.render('editAdmin', { admin: results });
-        });
+    const adminId = req.params.id;
+    const sql = 'SELECT * FROM admin WHERE adminId = ?';
+    // Fetch data from MySQL
+    db.query(sql, [adminId], (error, results) => {
+        if (error) {
+            console.error('Database query error:', error.message);
+            return res.status(500).send('Error Retrieving admins');
+        }
+        // Render HTML page with data
+        res.render('editAdmin', { admin: results});
     });
+});
 
 
-    app.post('/editAdmin/:id', (req, res) => {
-        // Get adminId from the request body
-        const adminId = req.params.Id;
-        const { username, Fullname, email, password, dob, contact } = req.body;
-        const sql = 'UPDATE admin SET username = ?, Fullname = ?, email = ?, password = ?, dob = ?, contact = ? WHERE adminId = ?';
-        db.query(sql, [username, Fullname, email, password, dob, contact, adminId], (err, result) => {
-            if (error) {
-                console.error("Error updating admin:", error);
-                res.status(500).send('Error updating admin');
-            } else {
-                res.redirect('/admin');
-            }
-        });
+    app.post('/editAdmin/:id', uploadadmin.single('image'),(req, res) => {
+    // Get adminId from the request body
+    const adminId = req.params.id;
+    const { username, password, name, dob, email, contact } = req.body;
+    let image = req.body.currentImage;
+    if (req.file){
+        image = req.file.filename;
+    }
+
+    const sql = 'UPDATE admin SET username = ?, password = ?, name = ?, email = ?, dob = ?, contact = ?, image = ? WHERE adminId = ?';
+    connection.query(sql, [username, password, name, dob, email, contact, image, adminId], (error, result) => {
+        if (error) {
+            console.error("Error updating admin:", error);
+            res.status(500).send('Error updating admin');
+        } else {
+            res.redirect('/admin');
+        }
     });
+});
 
 
     // Send a message (POST)
