@@ -52,7 +52,7 @@ const db = mysql.createConnection({
 });
 
 //RP738964$
-
+//Republic_C207
 db.connect((err) => {
     if (err) {
         throw err;
@@ -455,19 +455,40 @@ app.get('/student', checkAuthenticatedS, (req, res) => {
 
 // teacher route to render teacher page for users DONE// 
 app.get('/teacher', checkAuthenticatedT, (req, res) => {
-    const teacher = req.session.user; // Get the currently logged-in teacher's data
+    const teacher = req.session.user.username; // Get the currently logged-in teacher's data
         // Fetch sessions taught by the teacher
-        const sqlSession = 'SELECT s.sessionId, s.subject, s.session_date, s.session_time FROM session s INNER JOIN teacher t on s.teacherId = t.teacherID WHERE T.teacher_name = ?';
-        db.query(sqlSession, [teacher.name], (sessionError, sessionResults) => {
+        const sqlSession = `
+        SELECT s.*, s.sessionId, COUNT(ss.sessionId) AS 'current_student'
+        FROM session s 
+        LEFT JOIN session_signup ss ON s.sessionId = ss.sessionId
+        WHERE s.teacher_name = ?
+        GROUP BY s.sessionId
+        `;
+        db.query(sqlSession, [teacher], (sessionError, sessionResults) => {
             if (sessionError) {
                 console.error('Database session error:', sessionError.message);
                 return res.status(500).send("Error retrieving sessions");
+            }
+            for (let i = 0; i < sessionResults.length; i++) {
+                const newDate = new Date(sessionResults[i].session_date);
+
+                const duration = sessionResults[i].duration;
+                const parts = duration.split(":");
+                const hrs = parts[0]
+                const mins = parts[1]
+
+                sessionResults[i].session_date = newDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: '2-digit',
+                    year: 'numeric'
+                });
+                sessionResults[i].duration = hrs + ' hrs ' + mins + ' mins'
             }
         
             // Render the page with both teacher and session data
             res.render('teacher', {
                 teacher: req.session.user, // or teacherResults[0] if you fetched from DB
-                sessions: sqlSession   // Pass sessions to the template
+                sessions: sessionResults   // Pass sessions to the template
             });
         });
     });
