@@ -243,6 +243,7 @@ app.get('/StudentList', (req, res) => {
 });
 
 app.get('/TeacherList', (req, res) => {
+    user = req.session.user
     const sql = `SELECT * FROM teacher`
     db.query(sql, (error, results) => {
         if (error) {
@@ -257,7 +258,7 @@ app.get('/TeacherList', (req, res) => {
                 year: 'numeric'
             });
         }
-        res.render('TeacherList', { List: results })
+        res.render('TeacherList', { List: results, user: user})
     });
 });
 
@@ -317,6 +318,19 @@ app.post('/registerT', uploadteacher.fields([
         console.log(result);
         req.flash('success', 'Registration successful! Please log in.');
         res.redirect('/login');
+    });
+});
+
+app.post('/session', (req, res) => {
+    const { subject, session_date, session_time, teacher_name, duration, max_students } = req.body;
+    const sql = 'INSERT INTO session (subject, session_date, session_time, teacher_name, duration, max_students) VALUES (?, ?, ?, ?, ?, ?)';
+    db.query(sql, [subject, session_date, session_time, teacher_name, duration, max_students], (err, result) => {
+        if (err) {
+            throw err;
+        }
+        console.log(result);
+        req.flash('success', 'Session Added');
+        res.redirect('/session');
     });
 });
 
