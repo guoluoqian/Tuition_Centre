@@ -321,19 +321,6 @@ app.post('/registerT', uploadteacher.fields([
     });
 });
 
-app.post('/session', (req, res) => {
-    const { subject, session_date, session_time, teacher_name, duration, max_students } = req.body;
-    const sql = 'INSERT INTO session (subject, session_date, session_time, teacher_name, duration, max_students) VALUES (?, ?, ?, ?, ?, ?)';
-    db.query(sql, [subject, session_date, session_time, teacher_name, duration, max_students], (err, result) => {
-        if (err) {
-            throw err;
-        }
-        console.log(result);
-        req.flash('success', 'Session Added');
-        res.redirect('/session');
-    });
-});
-
 // login routes to render login page below //
 app.get('/login', (req, res) => {
     res.render('login', {
@@ -820,6 +807,21 @@ app.get('/session', (req, res) => {
         res.render('session', { session: results })
     });
 });
+
+// adding of session
+app.post('/session', (req, res) => {
+    const { subject, session_date, session_time, teacher_name, duration, max_students } = req.body;
+    const sql = 'INSERT INTO session (subject, session_date, session_time, teacher_name, duration, max_students) VALUES (?, ?, ?, ?, ?, ?)';
+    db.query(sql, [subject, session_date, session_time, teacher_name, duration, max_students], (err, result) => {
+        if (err) {
+            throw err;
+        }
+        console.log(result);
+        req.flash('success', 'Session Added');
+        res.redirect('/session');
+    });
+});
+
 app.post('/signup/:id', (req, res) => {
     if (!req.session.user || req.session.user.role !== 'student') {
         req.flash('error', 'Only students can sign up.');
