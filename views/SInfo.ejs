@@ -100,6 +100,21 @@
   font-weight: bold;
 } 
 
+.edit-btn {
+  background-color: #ffc107;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.back-btn {
+  background-color: #6c757d;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-weight: bold;
+}
 </style>
 
 <body>
@@ -134,8 +149,8 @@
       <p><b>Contact:</b><br> <%= student.contact %></p>
       <p><b>Grade:</b><br> <%= student.grade %></p>
       <p><b>Profile Picture:</b><br> <img src="/public/student/<%= student.image %>" alt="Profile Picture"></p>
-      <a href="/editStudent/<%= student.studentId %>">edit</a>
-      <a href="/student/">Back</a>
+      <a href="/editStudent/<%= student.studentId %>" class="edit-btn">edit</a>
+      <a href="/student/" class="back-btn">Back</a>
     </div>
       
   </div>
