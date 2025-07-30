@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF‑8">
+    <title>Learning Centre</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+</head>
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-image: url('images/R.jpg'); /* adjust path if needed */
+  background-size: cover;
+  background-repeat:repeat;
+  font-family: Arial, sans-serif;
+}
+
+    .top-bar {
+        background: #3e3f45;
+        color: white;
+        padding: 8px 20px;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+.navbar {
+    background-color: rgba(199, 193, 193, 0.541);
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #ccc;
+}
+
+    .logo {
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        /* spacing between links */
+        align-items: center;
+    }
+
+    .nav-links a {
+        text-decoration: none;
+        color: black;
+        font-size: 16px;
+        padding: 8px 10px;
+    }
+
+    .contact-button {
+        background-color: #f4511e;
+        color: white;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+
+    .login-button {
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        font-weight: bold;
+        padding: 8px 10px;
+    }
+
+    .register-button {
+        background-color: #28a745;
+        color: white;
+        border-radius: 5px;
+        font-weight: bold;
+        padding: 8px 10px;
+    }
+
+    .navbar nav a {
+        margin: 0 10px;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .navbar .button {
+        background-color: #f4511e;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 4px;
+    }
+
+.hero {
+    background-color: #ff5c1f;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.hero-text h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.hero-text p {
+    font-size: 18px;
+}
+
+.hero-images {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.badge {
+    background: #1e3d58;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.hero-images img {
+    width: 200px;
+    border-radius: 12px;
+}
+
+
+.logos img {
+
+            height: 100px;
+        }
+
+.home-btn {
+  background-color: #1ee6f4;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.session-btn {
+  background-color: #c780c5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+} 
+
+.container {
+    padding: 20px;
+    text-align: left; /* only affects container content, not the form */
+}
+
+.form-container {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 50px;
+    margin-top: 20px;
+}
+
+form {
+    width: 300px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    text-align: left; /* aligns labels and inputs inside form */
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left; /* ensures label/input inside group are left-aligned */
+}
+
+/* Footer design */
+.footer {
+    background-color: #3e3f45;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 30px;
+}
+
+.mt-5{
+    color:white
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #201f1f;
+  min-width: 160px;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+}
+
+.dropdown-menu li {
+  list-style: none;
+}
+
+.dropdown-menu li a {
+  display: block;
+  color: rgb(97, 82, 82);
+  padding: 10px;
+  text-decoration: none;
+  border-bottom: 1px solid #555;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #e4e4e4;
+}
+
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+</style>
+<body>
+  <header class="navbar">
+            <img src="/images/rp-logo.jpg" alt="EDUFIRST Logo">
+        </div>
+    <div class="logo">LEARNING CENTRE</div>
+    <nav class="nav-links">
+      <a href="/" class="home-btn">HOME</a>
+      <a href="/session" class="session-btn">SESSIONS</a>
+    <a href="/login" class="login-button">LOG IN</a>
+      <div class="dropdown">
+        <a href="/register" class="register-button">REGISTER ▼</a>
+        <ul class="dropdown-menu">
+          <li><a href="/registerT" class="teacher">Be a Teacher</a></li>
+          <li><a href="/registerS" class="student">Be a Student</a></li>
+        </ul>
+      </div>
+      <a href="/contact" class="contact-button">CONTACT US</a>
+    </nav>
+  </header>
+    <div class="container">
+        <h1 class="mt-5">Login</h1>
+        <% if (errors && errors.length> 0) { %>
+            <div class="alert alert-danger">
+                <% errors.forEach(function(error) { %>
+                    <p>
+                        <%= error %>
+                    </p>
+                    <% }); %>
+            </div>
+        <% } %>
+        <% if (messages && messages.length > 0) { %>
+            <div class="alert alert-success">
+                <% messages.forEach(function(message) { %>
+                    <p><%= message %></p>
+                <% }); %>
+            </div>
+        <% } %>
+        <form action="/login" method="POST" class="mt-4">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="userType">UserType:</label>
+                <select id="userType" name="userType" class="form-control" required>
+                    <option value="student" <% if (formData && formData.grade === 'student') {%> selected <% } %>>student</option>
+                    <option value="teacher" <% if (formData && formData.grade === 'teacher') {%> selected <% } %>>teacher</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <p class="mt-4">Dont have a account?<a href="/">Sign up</a></p>
+        </form>
+    </div>
+  <footer class="footer">
+    <p>Tel: +65 90520778 | Email: enquiry@team4.com.sg</p>
+    <p>Operating Hours: Weekdays 12 pm–8 pm, Sat 9 am–6 pm, Sun 9:30 am–4 pm</p>
+  </footer>
+</body>
+
+</html>
