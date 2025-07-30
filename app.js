@@ -501,6 +501,20 @@ app.get('/StudentList', (req, res) => {
                     console.error("Error updating student:", error);
                     res.status(500).send('Error updating student');
                 } else {
+                    if (req.session.user && req.session.user.studentId == studentId) {
+                // Update the session with the new values
+                req.session.user.username = username;
+                req.session.user.Fullname = Fullname;
+                req.session.user.email = email;
+                req.session.user.password = password;
+                req.session.user.dob = dob;
+                req.session.user.address = address;
+                req.session.user.contact = contact;
+                req.session.user.grade = grade;
+                if (image) {
+                    req.session.user.image = image;
+                }
+            }
                     if (req.session.user && req.session.user.role === 'student') {
                         res.redirect('/Student');
                     } else {res.redirect('/StudentList');}
