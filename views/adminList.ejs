@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Admin Dashboard</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .dashboard-container {
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+
+  h1,
+  h2 {
+    color: #333;
+  }
+
+  .section {
+    margin-top: 30px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  li {
+    background: #eef;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  /* Popup styles */
+  .announcement-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popup-content {
+    background: #fff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    width: 300px;
+  }
+
+  .popup-content button {
+    margin-top: 15px;
+    padding: 8px 16px;
+    border: none;
+    background: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .popup-content button:hover {
+    background: #0056b3;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <h1 class="mt-5">Dashboard</h1>
+    <p>Welcome, username</p>
+    <a href="/admin" class="btn btn-primary">Back</a>
+    <a href="/logout" class="btn btn-primary">Logout</a>
+  </div>
+  </head>
+
+  <body>
+
+    <div class="announcement-popup" id="announcement">
+      <div class="popup-content">
+        <h2>📢 Announcement</h2>
+        <p>New features have been added to the dashboard!</p>
+        <button onclick="closePopup()">Close</button>
+      </div>
+    </div>
+
+    <div class="dashboard-container">
+      <h1>Admin Dashboard</h1>
+      <div class="container">
+        <div>
+          <h3>Registered Admin</h3>
+        </div>
+        <table class="table table-hover small text-center">
+          <thead>
+            <tr>
+              <th width="100">Username</th>
+              <th width="100">Password</th>
+              <th width="50">Name</th>
+              <th width="50">Date of Birth</th>
+              <th width="50">Email</th>
+              <th width="50">Address</th>
+              <th width="50">Contact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for(let i=0; i < List.length; i++) { %>
+              <tr>
+                <td>
+                  <%= List[i].username %>
+                </td>
+                <td>
+                  <%= List[i].password %>
+                </td>
+                <td>
+                  <%= List[i].name %>
+                </td>
+                <td>
+                  <%= List[i].dob %>
+                </td>
+                <td>
+                  <%= List[i].email %>
+                </td>
+                <td>
+                  <%= List[i].address%>
+                </td>
+                <td>
+                  <%= List[i].contact%>
+                </td>
+                <td>
+                  <a href="/editAdmin/<%= List[i].adminId %>">edit</a>
+                </td>
+              </tr>
+              <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <script>
+        function closePopup() {
+          document.getElementById("announcement").style.display = "none";
+        }
+        window.onload = function () {
+          document.getElementById("announcement").style.display = "flex";
+        };
+      </script>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 20px;
+        }
+
+        .chat-container {
+          max-width: 800px;
+          margin: 0 auto;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          overflow: hidden;
+        }
+
+        .chat-header {
+          background: #25D366;
+          color: white;
+          padding: 15px;
+          text-align: center;
+        }
+
+        .chat-messages {
+          height: 500px;
+          overflow-y: auto;
+          padding: 15px;
+          background: #f9f9f9;
+        }
+
+        .message {
+          margin-bottom: 15px;
+          padding: 10px;
+          border-radius: 5px;
+          max-width: 70%;
+        }
+
+        .user-message {
+          background: #DCF8C6;
+          margin-right: auto;
+        }
+
+        .admin-message {
+          background: white;
+          margin-left: auto;
+          border: 1px solid #ddd;
+        }
+
+        .chat-input {
+          display: flex;
+          padding: 15px;
+          background: white;
+          border-top: 1px solid #ddd;
+        }
+
+        .chat-input input {
+          flex: 1;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+        }
+
+        .chat-input button {
+          margin-left: 10px;
+          background: #25D366;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+
+        .user-info {
+          font-size: 12px;
+          color: #666;
+          margin-bottom: 5px;
+        }
+      </style>
+      </head>
+
+      <body>
+        <div class="chat-container">
+          <div class="chat-header">
+            <h2>Admin Chat Panel</h2>
+          </div>
+
+          <div id="chatMessages" class="chat-messages"></div>
+          <div class="chat-input">
+            <input type="text" id="adminMessage" placeholder="Type your response...">
+            <button onclick="sendAdminMessage()">Send</button>
+          </div>
+        </div>
+
+        <script>
+          // Fetch and display messages
+          function fetchMessages() {
+            fetch('/api/chat')
+              .then(response => response.json())
+              .then(messages => {
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.innerHTML = '';
+
+                messages.forEach(msg => {
+                  const messageDiv = document.createElement('div');
+                  messageDiv.classList.add('message', msg.sender + '-message');
+
+                  if (msg.sender === 'user') {
+                    const userInfo = document.createElement('div');
+                    userInfo.classList.add('user-info');
+                    userInfo.textContent = `User - ${new Date(msg.timestamp).toLocaleString()}`;
+                    messageDiv.appendChild(userInfo);
+                  }
+
+                  const messageText = document.createElement('div');
+                  messageText.textContent = msg.message;
+                  messageDiv.appendChild(messageText);
+
+                  chatMessages.appendChild(messageDiv);
+                });
+
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+              });
+          }
+
+          // Send admin message
+          function sendAdminMessage() {
+            const messageInput = document.getElementById('adminMessage');
+            const message = messageInput.value.trim();
+
+            if (message) {
+              fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  message: message,
+                  sender: 'admin',
+                  timestamp: new Date().toISOString()
+                })
+              })
+                .then(() => {
+                  messageInput.value = '';
+                  fetchMessages();
+                });
+            }
+          }
+
+          // Enable sending with Enter key
+          document.getElementById('adminMessage').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+              sendAdminMessage();
+            }
+          });
+
+          // Refresh messages every 2 seconds
+          fetchMessages();
+          setInterval(fetchMessages, 2000);
+        </script>
+      </body>
+
+</html>
+
+</body>
+
+</html>
