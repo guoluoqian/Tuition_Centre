@@ -47,7 +47,7 @@ const uploadadmin = multer({
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'RP738964$',
+    password: 'Republic_C207',
     database: 'ca2_team4'
 });
 
@@ -213,8 +213,6 @@ app.get('/registerT', (req, res) => {
         formData: req.flash('formData')[0]
     });
 });
-
-//  Function to load users registered this month
 
 // API route to get student registered users
 app.get('/StudentList', (req, res) => {
@@ -555,7 +553,7 @@ app.get('/editTeacher/:id', (req, res) => {
             return res.status(500).send('Error retrieving teacher by ID');
         }
         if (results.length > 0) {
-            res.render('editTeacher', { teacher: results[0] });
+            res.render('editTeacher', { teacher: results[0], user: req.session.user });
         } else {
             res.status(404).send('Teacher not found');
         }
@@ -798,8 +796,6 @@ app.post('/send-message', (req, res) => {
         }
     });
 });
-
-
 
 // Route to serve the contact page
 
