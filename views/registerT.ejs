@@ -137,20 +137,87 @@
     padding: 20px 0;
     position: relative;
 }
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #333;
+  min-width: 160px;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+}
+
+.dropdown-menu li {
+  list-style: none;
+}
+
+.dropdown-menu li a {
+  display: block;
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+  border-bottom: 1px solid #555;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #555;
+}
+
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.logos img {
+
+            height: 100px;
+}
+
+.home-btn {
+  background-color: #1ee6f4;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.session-btn {
+  background-color: #c780c5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+} 
 </style>
 <body>
   <header class="navbar">
+              <div class="logos">
+                <img src="/images/rp-logo.jpg" alt="EDUFIRST Logo">
+            </div>
     <div class="logo">LEARNING CENTRE</div>
     <nav class="nav-links">
-      <a href="/">HOME</a>
-      <a href="/session">SESSIONS ▼</a>
-    <a href="/login" class="login-button">LOG IN</a>
-        <a href="/register" class="register-button">REGISTER</a>
+      <a href="/" class="home-btn">HOME</a>
+      <a href="/session" class="session-btn">SESSIONS</a>
+      <a href="/login" class="login-button">LOG IN</a>
+
+      <div class="dropdown">
+        <a href="/register" class="register-button">REGISTER ▼</a>
+        <ul class="dropdown-menu">
+          <li><a href="/registerT">Be a Teacher</a></li>
+          <li><a href="/registerS">Be a Student</a></li>
+        </ul>
+      </div>
+
       <a href="/contact" class="contact-button">CONTACT US</a>
     </nav>
   </header>
     <div class="container">
-        <h1 class="mt-5">Register</h1>
+        <h1 class="mt-5">Register As a Teacher</h1>
         <% if (messages && messages.length > 0) { %>
             <div class="alert alert-danger">
                 <% messages.forEach(function(message) { %>
@@ -158,6 +225,10 @@
                 <% }); %>
             </div>
         <% } %>
+        <div class="paragraph">
+            <p>Welcome to the Teacher Registration page! Please fill out the form below to register as a teacher at our Learning Centre. Ensure that all fields are completed accurately.</p>
+
+        </div>
         <form action="/registerT" method="POST" class="mt-4" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="username">Username:</label>

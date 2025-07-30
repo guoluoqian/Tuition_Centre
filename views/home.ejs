@@ -10,12 +10,43 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 </head>
 <style>
-    body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #fff;
-    color: #333;
+
+
+.dropdown {
+  position: relative;
 }
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #201f1f;
+  min-width: 160px;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+}
+
+.dropdown-menu li {
+  list-style: none;
+}
+
+.dropdown-menu li a {
+  display: block;
+  color: rgb(97, 82, 82);
+  padding: 10px;
+  text-decoration: none;
+  border-bottom: 1px solid #555;
+}
+
+.dropdown-menu li a:hover {
+  background-color: #e4e4e4;
+}
+
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
 
 .top-bar {
     background: #3e3f45;
@@ -86,13 +117,6 @@
     color: #333;
 }
 
-.navbar .button {
-    background-color: #f4511e;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 4px;
-}
-
 .hero {
     background-color: #ff5c1f;
     color: white;
@@ -105,8 +129,10 @@
     margin-bottom: 10px;
 }
 
+
 .hero-text p {
     font-size: 18px;
+    color: beige;
 }
 
 .hero-images {
@@ -130,43 +156,150 @@
     border-radius: 12px;
 }
 
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  background-color: #f9f9f9;
+  color: #333;
+  padding: 20px;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+
+.hero h1 {
+  font-size: 2rem;
+  margin-top: 20px;
+  color: #1e100d;
+}
+
+.intro {
+  margin: auto ;
+}
+
+.intro .content p {
+  margin-bottom: 10px;
+  margin-right: auto;
+}
+
+
+/* image for tuition to be at the side*/
+.intro-image {
+
+  float: left;
+  width: 30%;
+  margin-right: 60px;
+  border-radius: 10px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Footer design */
 .footer {
     background-color: #3e3f45;
-    color: white;
+    color: rgb(255, 255, 255);
     text-align: center;
-    padding: 20px 0;
-    position: relative;
+    padding: 40px 0;
+    margin-top: 40px;
 }
+
+  .logos img {
+
+       height: 100px;
+     }
+
+.hero-btn {
+  background-color: #376942;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.home-btn {
+  background-color: #1ee6f4;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.session-btn {
+  background-color: #c780c5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+} 
+
 </style>
 <body>
   <header class="navbar">
+      <div class="logos">
+        <img src="/images/rp-logo.jpg" alt="EDUFIRST Logo">
+        </div>
     <div class="logo">LEARNING CENTRE</div>
     <nav class="nav-links">
-      <a href="/">HOME</a>
-      <a href="/session">SESSIONS ▼</a>
-    <a href="/login" class="login-button">LOG IN</a>
-        <a href="/register" class="register-button">REGISTER</a>
+      <a href="/" class="home-btn">HOME</a>
+      <a href="/session" class="session-btn">SESSIONS</a>
+      <a href="/login" class="login-button">LOG IN</a>
+
+      <div class="dropdown">
+        <a href="/register" class="register-button">REGISTER ▼</a>
+        <ul class="dropdown-menu">
+          <li><a href="/registerT" class="teacher">Be a Teacher</a></li>
+          <li><a href="/registerS" class="student">Be a Student</a></li>
+        </ul>
+      </div>
+
       <a href="/contact" class="contact-button">CONTACT US</a>
     </nav>
   </header>
 
+
   <main class="hero">
     <div class="hero-text">
-      <h1>AY2025<br>Open for Registration</h1>
-      <p>Enrol As a Teacher and Start Your Teaching Journey Today With Us!</p>
-      <p>Enrol As a Student and Start Your Learning Journey Here!</p>
+      <h1>Welcome to Republical Learning Tuition!</h1>
+      <br>
+      <p><a href="/registerT" class="hero-btn teacher-btn" >Enrol As a Teacher</a> and Start Your Teaching Journey Today With Us!</p>
+
+      <p><p><a href="/registerS" class="hero-btn teacher-btn" >Enrol As a Student</a> and Start Your Learning Journey Today With Us!</p>
+</div>
     </div>
-    <div class="hero-images">
-      <div class="primary">
-        <div class="badge">Primary</div>
-        <img src="/images/primary.jpg" alt="Primary class">
-      </div>
-      <div class="secondary">
-        <div class="badge">Secondary</div>
-        <img src="/images/secondary.jpg" alt="Secondary students">
-      </div>
+    <h3>
+    </h3>
     </div>
   </main>
+<container>
+  <section class="intro">
+    <div class="content">
+      <img src="/images/tuition.jpg" alt="EduFirst image" class="intro-image" />
+      <div class="text-content">
+
+      <p>Republical Learning Centre was set up with the aim of providing a premium education service to our students.</p>
+      <p>We emphasise on a <span style="color:orange;"><strong>personalize</strong></span> and <span style="color:orange;"><strong>holistic approach</strong></span> to learning, where students’ <span style="color: orange;"><strong>individual strengths</strong></span> and <span style="color: orange;"><strong>weakness</strong></span> are <span style="color: orange;"><strong>identified</strong></span>  and <span style="color: orange;"><strong>addressed</strong></span>.</p>
+      <p>With an extremely small class size of between <span style="color: orange;"><strong>4 to 8 students</strong></span>, we seek to maximize the potential of each child. The small group size creates a conducive environment for optimal learning through <span style="color: orange;"><strong>close teacher-to-student interaction</strong></span>.</p>
+      <p>Our tutors are carefully handpicked, and have gone through a <span style="color: orange;"><strong>stringent selection process</strong></span> to ensure the <span style="color: orange;"><strong>potential of each child is maximized</strong></span>.</p>
+    </div>
+  </section>
+</container>
+
+
 
   <footer class="footer">
     <p>Tel: +65 90520778 | Email: enquiry@team4.com.sg</p>
@@ -174,9 +307,10 @@
   </footer>
 
   <style>
-    .floating_btn {
+/* Floating WhatsApp Button */
+.floating_btn {
   position: fixed;
-  bottom: 30px;
+  bottom: 100px; /* Raised higher to make room for chat button */
   right: 30px;
   z-index: 1000;
 }
@@ -213,147 +347,13 @@
   text-align: center;
   font-weight: bold;
 }
-  </style>
 
-        <div class="floating_btn">
-            <a target="_blank" href="https://api.whatsapp.com/send?phone=6590520778&text=Hello%20Learning%20Centre" class="whatsapp-button">
-                <div class="contact_icon">
-                    <i class="fab fa-whatsapp my-float"></i>
-                </div>
-            </a>
-            <p class="text_icon">Talk to us?</p>
-        </div>
-
-<style>
-    /* CSS for the newsletter design */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 0;
-}
-
-.card {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.4);
-    padding: 50px;
-    text-align: center;
-    max-width: 400px;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-h2 {
-    color: #36b75a;
-    margin-bottom: 10px;
-}
-
-
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-p {
-    color: #666;
-}
-
-.msg {
-    display: none;
-    color: green;
-    margin-top: 40px;
-}
-
-
-input[type="email"] {
-    width: 65%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 7px;
-}
-
-button {
-    background-color: crimson;
-    color: #fff;
-    padding: 10px 10px;
-    margin-top: 5px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.4s ease;
-}
-
-button:hover {
-    background-color: #65686b;
-}
-</style>
-<body>
-    <div class="container">
-        <div class="card">
-            <h2>Subscribe to GFG Newsletter</h2>
-            <p>Be Updated with latest technologies</p>
-            <form id="thanks" method="POST">
-                <input type="email" name="email" 
-                    id="email" 
-                    placeholder="Enter your email" 
-                    required>
-                <button type="submit">
-                    Subscribe
-                </button>
-            </form>
-            
-            <p class="msg" id="congo">
-                Thanks for subscribing!
-            </p>
-        </div>
-    </div>
-
-    <script>
-        const form = document.getElementById("thanks");
-        const successMessage =
-            document.getElementById("congo");
-
-        form.addEventListener("submit", function (e) {
-            e.preventDefault();
-            successMessage.style.display = "block";
-        });
-    </script>
-</body>
-</head>
-<!-- Floating Chat Button -->
-<div class="chat-button" onclick="toggleChat()">
-  <div class="chat-icon">💬</div>
-  <div class="chat-label">Chat with us</div>
-</div>
-
-<!-- Chat Popup -->
-<div id="chatPopup" class="chat-popup">
-  <div class="chat-header">
-    <h3>Chat with Admin</h3>
-    <span class="close-chat" onclick="toggleChat()">×</span>
-    <div class="privacy-note">Privacy - Terms apply</div>
-  </div>
-  <div id="chatMessages" class="chat-messages"></div>
-  <div class="chat-input">
-    <input type="text" id="userMessage" placeholder="Type your message...">
-    <button onclick="sendMessage()">Send</button>
-  </div>
-</div>
-
-<style>
 /* Chat Button Styles */
+/* Chat Button */
 .chat-button {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  right: 30px; /* Align with WhatsApp button horizontally */
   background: #25D366;
   color: white;
   padding: 10px 15px;
@@ -461,7 +461,111 @@ button:hover {
   margin-right: auto;
   border: 1px solid #ddd;
 }
+
+
+.card {
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.4);
+    padding: 50px;
+    max-width: 400px;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    color: #36b75a;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #666;
+}
+
+/* Form styles */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input[type="email"] {
+    width: 65%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+}
+
+button {
+    background-color: crimson;
+    color: #fff;
+    padding: 10px 10px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.4s ease;
+}
+
+button:hover {
+    background-color: #65686b;
+}
+
+.msg {
+    display: none;
+    color: green;
+    margin-top: 40px;
+}
+  </style>
+
+        <div class="floating_btn">
+            <a target="_blank" href="https://api.whatsapp.com/send?phone=6590520778&text=Hello%20Learning%20Centre" class="whatsapp-button">
+                <div class="contact_icon">
+                    <i class="fab fa-whatsapp my-float"></i>
+                </div>
+            </a>
+            <p class="text_icon">Talk to us?</p>
+        </div>
+
+
+
 </style>
+
+    <script>
+        const form = document.getElementById("thanks");
+        const successMessage =
+            document.getElementById("congo");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            successMessage.style.display = "block";
+        });
+    </script>
+</body>
+</head>
+<!-- Floating Chat Button -->
+<div class="chat-button" onclick="toggleChat()">
+  <div class="chat-icon">💬</div>
+  <div class="chat-label">Chat with us</div>
+</div>
+
+<!-- Chat Popup -->
+<div id="chatPopup" class="chat-popup">
+  <div class="chat-header">
+    <h3>Chat with Admin</h3>
+    <span class="close-chat" onclick="toggleChat()">×</span>
+    <div class="privacy-note">Privacy - Terms apply</div>
+  </div>
+  <div id="chatMessages" class="chat-messages"></div>
+  <div class="chat-input">
+    <input type="text" id="userMessage" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+
 
 <script>
 // Chat functionality
@@ -537,8 +641,6 @@ document.getElementById('userMessage').addEventListener('keypress', function(e) 
   }
 });
 
-// For demo purposes - in real app you'd use WebSockets or polling
-setInterval(fetchChatHistory, 5000);
 </script>
 
 </body>

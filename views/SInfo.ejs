@@ -83,16 +83,42 @@
     padding: 8px 15px;
     border-radius: 4px;
   }
+
+  .home-btn {
+  background-color: #1ee6f4;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.session-btn {
+  background-color: #c780c5;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+} 
+
 </style>
 
 <body>
   <header class="navbar">
     <div class="logo">LEARNING CENTRE</div>
     <nav class="nav-links">
-      <a href="/student">HOME</a>
-      <a href="/SInfo/" class="profile-box">@<%= student.username %></a>
+      <a href="/" class="home-btn">HOME</a>
+      <a href="/session" class="session-btn">SESSIONS</a>
+      <a href="/login" class="login-button">LOG IN</a>
+
+      <div class="dropdown">
+        <a href="/register" class="register-button">REGISTER ▼</a>
+        <ul class="dropdown-menu">
+          <li><a href="/registerT">Be a Teacher</a></li>
+          <li><a href="/registerS">Be a Student</a></li>
+        </ul>
+      </div>
+
       <a href="/contact" class="contact-button">CONTACT US</a>
-      <a href="/logout" class="logout-button">LOGOUT</a>
     </nav>
   </header>
 
