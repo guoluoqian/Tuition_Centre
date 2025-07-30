@@ -91,36 +91,35 @@ li {
 </style>
 <body>
 
-    <div class="announcement-popup" id="announcement">
-        <div class="popup-content">
-            <h2>📢 Announcement</h2>
-            <p>Welcome Back!</p>
-            <p>Welcome back Luoqian!</p>
-            <button onclick="closePopup()">Close</button>
-        </div>
+  <div class="announcement-popup" id="announcement">
+    <div class="popup-content">
+      <h2>📢 Announcement</h2>
+      <p>Welcome Back!</p>
+      <p>Welcome back Luoqian!</p>
+      <button onclick="closePopup()">Close</button>
+    </div>
+  </div>
+
+  <div class="dashboard-container">
+    <h1>Admin Dashboard</h1>
+
+    <div class="section" id="inbox-section">
+      <h2>📬 Inbox Messages</h2>
+      <a href="/inbox" class="btn btn-secondary">View Inbox Messages</a>
     </div>
 
-    <div class="dashboard-container">
-        <h1>Admin Dashboard</h1>
-
-<div class="section" id="inbox-section">
-    <h2>📬 Inbox Messages</h2>
-    <a href="/inbox" class="btn btn-secondary">View Inbox Messages</a>
-</div>
-
-        <div class="section" id="user-data-section">
-            <h2>👥 Users Registered This Month</h2>
-            <p id="user-count">Loading...</p>
-            <ul id="user-list">
-                <!-- User data will be loaded here -->
-            </ul>
-        </div>
+    <div class="section" id="user-data-section">
+      <h2>👥 Users Registered</h2>
+      <a href="/StudentList" class="btn btn-secondary">Student List</a>
+      <a href="/TeacherList" class="btn btn-secondary">Teacher List</a>
     </div>
-        <div class="section" id="manage-admin" >
-            <h2>🛠️ Manage Admins</h2>
-            <a href="/addAdmin" class="btn btn-secondary">Add New Admin</a><br><br>
-            <a href="/adminList" class="btn btn-secondary">View Admins</a><br><br>
-    </div>
+  </div>
+  <div class="section" id="manage-admin">
+    <h2>🛠️ Manage Admins / Sessions</h2>
+    <a href="/addAdmin" class="btn btn-secondary">Add New Admin</a><br><br>
+    <a href="/adminList" class="btn btn-secondary">View Admins</a><br><br>
+    <a href="/adminList" class="btn btn-secondary">Sessions</a><br><br>
+  </div>
 
 <script>
     function closePopup() {
