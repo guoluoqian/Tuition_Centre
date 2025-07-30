@@ -701,13 +701,10 @@ app.post('/admin', async (req, res) => {
 });
 
 app.get('/addAdmin', (req, res) => {
-    res.render('addAdmin', {
-        messages: req.flash('error'),
-        formData: req.flash('formData')[0]
-    });
+    res.render('addAdmin', { messages: req.flash('error'), formData: req.flash('formData')[0] });
 });
 
-app.post('/addAdmin', uploadadmin.single('image'), (req, res) => {
+app.post('/addAdmin', uploadadmin.single('image'),(req, res) => {
     const { username, password, name, dob, email, contact } = req.body;
     let image;
     if (req.file) {
