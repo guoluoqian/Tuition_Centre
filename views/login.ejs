@@ -1,189 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF‑8">
-  <title>Learning Centre</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/styles.css">
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <meta charset="UTF‑8">
+    <title>Learning Centre</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
 </head>
 <style>
     body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #fff;
-    color: #333;
-}
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #fff;
+        color: #333;
+    }
 
-.top-bar {
-    background: #3e3f45;
-    color: white;
-    padding: 8px 20px;
-    font-size: 14px;
-    display: flex;
-    justify-content: space-between;
-}
+    .top-bar {
+        background: #3e3f45;
+        color: white;
+        padding: 8px 20px;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+    }
 
-.navbar {
-    background-color: white;
-    padding: 15px 30px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    border-bottom: 1px solid #ccc;
-}
+    .navbar {
+        background-color: white;
+        padding: 15px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        border-bottom: 1px solid #ccc;
+    }
 
-.logo {
-    font-weight: bold;
-    font-size: 20px;
-    margin-bottom: 10px;
-}
+    .logo {
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
 
-.nav-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px; /* spacing between links */
-    align-items: center;
-}
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        /* spacing between links */
+        align-items: center;
+    }
 
-.nav-links a {
-    text-decoration: none;
-    color: black;
-    font-size: 16px;
-    padding: 8px 10px;
-}
+    .nav-links a {
+        text-decoration: none;
+        color: black;
+        font-size: 16px;
+        padding: 8px 10px;
+    }
 
-.contact-button {
-    background-color: #f4511e;
-    color: white;
-    border-radius: 5px;
-    font-weight: bold;
-}
+    .contact-button {
+        background-color: #f4511e;
+        color: white;
+        border-radius: 5px;
+        font-weight: bold;
+    }
 
 
-.login-button {
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-    font-weight: bold;
-    padding: 8px 10px;
-}
+    .login-button {
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        font-weight: bold;
+        padding: 8px 10px;
+    }
 
-.register-button {
-    background-color: #28a745;
-    color: white;
-    border-radius: 5px;
-    font-weight: bold;
-    padding: 8px 10px;
-}
+    .register-button {
+        background-color: #28a745;
+        color: white;
+        border-radius: 5px;
+        font-weight: bold;
+        padding: 8px 10px;
+    }
 
-.navbar nav a {
-    margin: 0 10px;
-    text-decoration: none;
-    color: #333;
-}
+    .navbar nav a {
+        margin: 0 10px;
+        text-decoration: none;
+        color: #333;
+    }
 
-.navbar .button {
-    background-color: #f4511e;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 4px;
-}
+    .navbar .button {
+        background-color: #f4511e;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 4px;
+    }
 
-.hero {
-    background-color: #ff5c1f;
-    color: white;
-    padding: 40px 20px;
-    text-align: center;
-}
+    .hero {
+        background-color: #ff5c1f;
+        color: white;
+        padding: 40px 20px;
+        text-align: center;
+    }
 
-.hero-text h1 {
-    font-size: 48px;
-    margin-bottom: 10px;
-}
+    .hero-text h1 {
+        font-size: 48px;
+        margin-bottom: 10px;
+    }
 
-.hero-text p {
-    font-size: 18px;
-}
+    .hero-text p {
+        font-size: 18px;
+    }
 
-.hero-images {
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
+    .hero-images {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
 
-.badge {
-    background: #1e3d58;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 20px;
-    margin-bottom: 5px;
-    display: inline-block;
-}
+    .badge {
+        background: #1e3d58;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        margin-bottom: 5px;
+        display: inline-block;
+    }
 
-.hero-images img {
-    width: 200px;
-    border-radius: 12px;
-}
+    .hero-images img {
+        width: 200px;
+        border-radius: 12px;
+    }
 
-.footer {
-    background-color: #3e3f45;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    position: relative;
-}
+    .footer {
+        background-color: #3e3f45;
+        color: white;
+        text-align: center;
+        padding: 20px 0;
+        position: relative;
+    }
 </style>
+
 <body>
-  <header class="navbar">
-    <div class="logo">LEARNING CENTRE</div>
-    <nav class="nav-links">
-      <a href="/">HOME</a>
-      <a href="/session">SESSIONS ▼</a>
-    <a href="/login" class="login-button">LOG IN</a>
-        <a href="/register" class="register-button">REGISTER</a>
-      <a href="/contact" class="contact-button">CONTACT US</a>
-    </nav>
-  </header>
+    <header class="navbar">
+        <div class="logo">LEARNING CENTRE</div>
+        <nav class="nav-links">
+            <a href="/">HOME</a>
+            <a href="/session">SESSIONS ▼</a>
+            <a href="/register" class="register-button">REGISTER</a>
+            <a href="/contact" class="contact-button">CONTACT US</a>
+        </nav>
+    </header>
     <div class="container">
         <h1 class="mt-5">Login</h1>
-        <% if (errors && errors.length > 0) { %>
+        <% if (errors && errors.length> 0) { %>
             <div class="alert alert-danger">
                 <% errors.forEach(function(error) { %>
-                    <p><%= error %></p>
-                <% }); %>
+                    <p>
+                        <%= error %>
+                    </p>
+                    <% }); %>
             </div>
-        <% } %>
-        <% if (messages && messages.length > 0) { %>
-            <div class="alert alert-success">
-                <% messages.forEach(function(message) { %>
-                    <p><%= message %></p>
-                <% }); %>
-            </div>
-        <% } %>
-        <form action="/login" method="POST" class="mt-4">
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="userType">UserType:</label>
-                <select id="userType" name="userType" class="form-control" required>
-                    <option value="student" <% if (formData && formData.grade === 'student') {%> selected <% } %>>student</option>
-                    <option value="teacher" <% if (formData && formData.grade === 'teacher') {%> selected <% } %>>teacher</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-            <p class="mt-4">Dont have a account?<a href="/">Sign up</a></p>
-        </form>
+            <% } %>
+                <% if (messages && messages.length> 0) { %>
+                    <div class="alert alert-success">
+                        <% messages.forEach(function(message) { %>
+                            <p>
+                                <%= message %>
+                            </p>
+                            <% }); %>
+                    </div>
+                    <% } %>
+                        <form action="/login" method="POST" class="mt-4">
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input type="password" id="password" name="password" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="userType">UserType:</label>
+                                <select id="userType" name="userType" class="form-control" required>
+                                    <option value="student" <% { %> selected
+                                        <% } %>>student
+                                    </option>
+                                    <option value="teacher" <% { %> selected
+                                        <% } %>>teacher
+                                    </option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Login</button>
+                            <p class="mt-4">Dont have a account?<a href="/register">Sign up</a></p>
+                        </form>
     </div>
 </body>
+
 </html>
