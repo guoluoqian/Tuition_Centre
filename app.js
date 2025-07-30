@@ -45,10 +45,10 @@ const uploadadmin = multer({
 
 // Database connection
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'Republic_C207',
-    database: 'ca2_team4'
+    host: 'c237-all.mysql.database.azure.com',
+    user: 'c237admin',
+    password: 'c2372025!',
+    database: 'c237_Tuition_Centre'
 });
 
 //RP738964$
