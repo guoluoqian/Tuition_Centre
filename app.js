@@ -630,7 +630,7 @@ app.get('/admin-dashboard', (req, res) => {
     res.render('admin-dashboard', { error: null });
 });
 
-app.get('/admin', checkAuthenticatedA, (req, res) => {
+app.get('/admin', (req, res) => {
     res.render('admin');
 });
 
@@ -659,7 +659,7 @@ app.get('/addAdmin', (req, res) => {
     });
 });
 
-app.post('/addAdmin', uploadadmin.single('image'), validateRegistrationAdmin, (req, res) => {
+app.post('/addAdmin', uploadadmin.single('image'), (req, res) => {
     const { username, password, name, dob, email, contact } = req.body;
     let image;
     if (req.file) {
