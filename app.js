@@ -47,7 +47,7 @@ const uploadadmin = multer({
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'Republic_C207',
+    password: 'RP738964$',
     database: 'ca2_team4'
 });
 

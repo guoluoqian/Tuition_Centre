@@ -7,12 +7,16 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
-  }
+/* Base styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+
 
   .dashboard-container {
     max-width: 900px;
@@ -23,8 +27,19 @@
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   }
 
-  h1,
-  h2 {
+  /* Dashboard wrapper */
+.dashboard-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+}
+
+
+
+  h1, h2 {
     color: #333;
   }
 
@@ -150,8 +165,10 @@
                   <%= List[i].teachingGrade%>
                 </td>
                 <td>
-                  <a href="/editTeacher/<%= List[i].teacherId %>">Edit</a>
-                  <a href="/deleteTeacher/<%= List[i].teacherId %>" style="color: red;">Delete</a>
+                  <a href="/editTeacher/<%= List[i].teacherId %>" class="edit-btn">Edit</a>
+                  <br>
+                  <br>
+                  <a href="/deleteTeacher/<%= List[i].teacherId %>" style="color: red;" class="delete-btn">Delete</a>
                 </td>
               </tr>
               <% } %>
@@ -243,6 +260,24 @@
           color: #666;
           margin-bottom: 5px;
         }
+.edit-btn {
+  background-color: #f4511e;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-bottom: 10px; /* This adds spacing between the buttons */
+}
+
+.delete-btn {
+  background-color: #451ef4;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+
       </style>
       </head>
 
