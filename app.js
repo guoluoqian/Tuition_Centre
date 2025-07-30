@@ -828,10 +828,9 @@ app.get('/addSession', (req, res) => {
     });
 });
 
-// register route for sessions, admin only //
 app.post('/addSession', (req, res) => {
     const { subject, session_date, session_time, teacher_name, duration, max_students } = req.body;
-    const sql = 'INSERT INTO student (username, Fullname, email, password, dob, address, contact, grade, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO session (subject, session_date, session_time, teacher_name, duration, max_students) VALUES (?, ?, ?, ?, ?, ?)';
     db.query(sql, [subject, session_date, session_time, teacher_name, duration, max_students], (err, result) => {
         if (err) {
             console.error('Database query error:', err.message);
@@ -850,7 +849,7 @@ app.post('/addSession', (req, res) => {
                 day: '2-digit',
                 year: 'numeric'
             });
-            results[i].duration = hrs + ' hrs ' + mins + ' mins'
+            result[i].duration = hrs + ' hrs ' + mins + ' mins'
         }
         res.render('session', { session: result })
     });
