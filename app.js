@@ -760,6 +760,24 @@ app.get('/StudentList', (req, res) => {
             res.render('session', { session: results })
         });
     });
+    app.post('/signup/:id', (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'student') {
+        req.flash('error', 'Only students can sign up.');
+        return res.redirect('/login');
+    }
+    const sessionId = req.params.id;
+    const studentId = req.session.user.studentId;
+
+    const sql = `INSERT INTO session_signup (studentId, sessionId) VALUES (?, ?)`;
+
+    db.query(sql, [studentId, sessionId], (err, result) => {
+        if (err) {
+            console.error('Error signing up:', err.message);
+            return res.status(500).send('Error signing up');
+        }
+        res.redirect('/student');
+    });
+});
 
     // logout route //
     app.get('/logout', (req, res) => {
