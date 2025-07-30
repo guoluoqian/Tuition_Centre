@@ -5,6 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enquiry - EDUFIRST LEARNING CENTRE</title>
     <style>
+    body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fff;
+    color: #333;
+}
+
+.top-bar {
+    background: #3e3f45;
+    color: white;
+    padding: 8px 20px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar {
+    background-color: white;
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #ccc;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* spacing between links */
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    padding: 8px 10px;
+}
+
+.contact-button {
+    background-color: #f4511e;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+
+.login-button {
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 8px 10px;
+}
+
+.register-button {
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 8px 10px;
+}
+
+.navbar nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #333;
+}
+
+.navbar .button {
+    background-color: #f4511e;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+}
+
+.hero {
+    background-color: #ff5c1f;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
         :root {
             --primary: #2c5aa0;
             --secondary: #f8f9fa;
@@ -201,13 +290,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
   <header class="navbar">
-    <div class="logo">EDU<span>FIRST</span> LEARNING CENTRE</div>
+    <div class="logo">LEARNING CENTRE</div>
     <nav class="nav-links">
       <a href="/">HOME</a>
-      <a href="/about">ABOUT US</a>
-      <a href="/subjects">subjects ▼</a>
-      <a href="/location">LOCATIONS ▼</a>
-      <a href="/blog">BLOG</a>
+      <a href="/session">SESSIONS ▼</a>
+    <a href="/login" class="login-button">LOG IN</a>
+        <a href="/register" class="register-button">REGISTER</a>
       <a href="/contact" class="contact-button">CONTACT US</a>
     </nav>
   </header>
@@ -309,8 +397,8 @@
                 <h2>Contact Information</h2>
                 
                 <div class="contact-info">
-                    <p><i class="fas fa-phone-alt"></i> +65 9106 7716</p>
-                    <p><i class="fas fa-envelope"></i> enquiry@edufirst.com.sg</p>
+                    <p><i class="fas fa-phone-alt"></i> +65 90520778</p>
+                    <p><i class="fas fa-envelope"></i> enquiry@team4.com.sg</p>
                     <p><i class="fas fa-map-marker-alt"></i> Multiple locations across Singapore</p>
                 </div>
                 
@@ -327,29 +415,6 @@
 					<p><strong>West (Clementi):</strong> 321 Clementi Avenue 5, Singapore 120321</p>
                 
             </div>
-			<footer id="react-footer" class="react-footer home-main pt---120 ">
-            <div class="footer-top">
-                <div class="container">
-                    <div class="footer-top-cta">
-                        <div class="row">
-                            <div class="col-lg-7">
-                                <h3>Subscribe To Our Newsletter</h3>
-<h4>Stay up-to-date with our educational offerings and events!</h4>
-                            </div>
-                            <div class="col-lg-5 text-right">
-                                <div class="newsletter_two">
-                                <div class="emaillist" id="es_form_f2-n1"><form action="/enquiry.html#es_form_f2-n1" method="post" class="es_subscription_form es_shortcode_form  es_ajax_subscription_form" id="es_subscription_form_6886e08e53523" data-source="ig-es" data-form-id="2"><input type="hidden" name="esfpx_form_id" value="2" /><input type="hidden" name="esfpx_lists[]" value="862d213d7b70" /><input type="hidden" name="es" value="subscribe" />
-			<input type="hidden" name="esfpx_es_form_identifier" value="f2-n1" />
-			<input type="hidden" name="esfpx_es_email_page" value="14" />
-			<input type="hidden" name="esfpx_es_email_page_url" value="https://www.edufirst.com.sg/enquiry.html" />
-			<input type="hidden" name="esfpx_status" value="Unconfirmed" />
-			<input type="hidden" name="esfpx_es-subscribe" id="es-subscribe-6886e08e53523" value="e86380413a" />
-			<label style="position:absolute;top:-99999px;left:-99999px;z-index:-99;" aria-hidden="true"><span hidden>Please leave this field empty.</span><input type="email" name="esfpx_es_hp_email" class="es_required_field" tabindex="-1" autocomplete="-1" value="" /></label><style>form.es_subscription_form[data-form-id="2"] * { box-sizing: border-box; } body {margin: 0;}#esfpx_email_29e79bd7faac1{padding-top:5px;padding-bottom:5px;}#iwgm4{background-color:#545563;color:white;}form[data-form-id="2"] .es-form-field-container .gjs-row{display:flex;justify-content:flex-start;align-items:stretch;flex-wrap:nowrap;}form[data-form-id="2"] .es-form-field-container .gjs-cell{flex-grow:1;flex-basis:100%;}form[data-form-id="2"] .es-form-field-container .gjs-cell[data-highlightable="1"]:empty{border-top-width:1px;border-right-width:1px;border-bottom-width:1px;border-left-width:1px;border-top-style:dashed;border-right-style:dashed;border-bottom-style:dashed;border-left-style:dashed;border-top-color:rgb(204, 204, 204);border-right-color:rgb(204, 204, 204);border-bottom-color:rgb(204, 204, 204);border-left-color:rgb(204, 204, 204);border-image-source:initial;border-image-slice:initial;border-image-width:initial;border-image-outset:initial;border-image-repeat:initial;height:30px;}form[data-form-id="2"] .es-form-field-container .gjs-row .gjs-cell input[type="checkbox"], form[data-form-id="2"] .es-form-field-container .gjs-row .gjs-cell input[type="radio"]{margin-top:0px;margin-right:5px;margin-bottom:0px;margin-left:0px;width:auto;}form[data-form-id="2"] .es-form-field-container .gjs-row{margin-bottom:0.6em;}form[data-form-id="2"] .es-form-field-container label.es-field-label{display:block;}@media (max-width: 320px){form[data-form-id="2"] .es-form-field-container{padding-top:1rem;padding-right:1rem;padding-bottom:1rem;padding-left:1rem;}}</style><div class="es-form-field-container"><div class="gjs-row"></div><div class="gjs-row"><div class="gjs-cell"><input type="email" required class="es-email" name="esfpx_email" autocomplete="off" placeholder="Your Email Address" id="esfpx_email_29e79bd7faac1" /><input type="submit" name="submit" value="Sign Me Up" required id="iwgm4" /></div></div><div class="gjs-row"><div class="gjs-cell"></div></div></div><span class="es_spinner_image" id="spinner-image"><img src="https://www.edufirst.com.sg/wp-content/plugins/email-subscribers/lite/public/images/spinner.gif" alt="Loading" /></span></form><span class="es_subscription_message " id="es_subscription_message_6886e08e53523"></span></div>  
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
 </body>
 </html>
         </div>
