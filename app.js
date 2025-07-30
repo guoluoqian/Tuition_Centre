@@ -47,7 +47,7 @@ const uploadadmin = multer({
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'Republic_C207',
+    password: 'RP738964$',
     database: 'ca2_team4'
 });
 
@@ -215,13 +215,6 @@ app.get('/registerT', (req, res) => {
 });
 
 //  Function to load users registered this month
-// API route to get inbox messages
-app.get('/api/messages', (req, res) => {
-    db.query('SELECT sender, message FROM messages', (err, results) => {
-        if (err) return res.status(500).send(err);
-        res.json(results);
-    });
-});
 
 // API route to get student registered users
 app.get('/StudentList', (req, res) => {
@@ -806,18 +799,7 @@ app.post('/send-message', (req, res) => {
     });
 });
 
-// Get all messages (GET)
-app.get('/inbox', (req, res) => {
-    const sql = `SELECT * FROM messages ORDER BY timestamp DESC`;
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error('Fetch failed:', err);
-            res.status(500).send('Error fetching messages');
-        } else {
-            res.json(results);
-        }
-    });
-});
+
 
 // Route to serve the contact page
 
